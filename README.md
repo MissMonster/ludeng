@@ -1,4 +1,4 @@
-# go-admin-ui
+# go-admin-ui --zy
 
 
 ![build](https://github.com/wenjianzhang/go-admin-ui/workflows/build/badge.svg?branch=master) ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
