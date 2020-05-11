@@ -6,21 +6,21 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <!-- <search id="header-search" class="right-menu-item" /> -->
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <go-admin-git id="go-admin-git" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="文档地址" effect="dark" placement="bottom">
           <go-admin-doc id="go-admin-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
-        <el-tooltip content="打赏" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="打赏" effect="dark" placement="bottom">
           <go-admin-donate id="go-admin-donatet" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -39,15 +39,15 @@
           <router-link to="/profile/index">
             <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/wenjianzhang/go-admin">
+          <!-- <a target="_blank" href="https://github.com/wenjianzhang/go-admin">
             <el-dropdown-item>Github go-admin</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://github.com/wenjianzhang/go-admin-ui">
+          </a> -->
+          <!-- <a target="_blank" href="https://github.com/wenjianzhang/go-admin-ui">
             <el-dropdown-item>Github go-admin-ui</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://github.com/wenjianzhang/go-admin/wiki">
+          </a> -->
+          <!-- <a target="_blank" href="https://github.com/wenjianzhang/go-admin/wiki">
             <el-dropdown-item>文档</el-dropdown-item>
-          </a>
+          </a> -->
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出登录</span>
           </el-dropdown-item>
