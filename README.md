@@ -13,6 +13,7 @@
 
 - [前端项目](https://github.com/wenjianzhang/go-admin-ui)
 
+- [国内文档](https://panjiachen.gitee.io/vue-element-admin-site/zh/)
 
 
 ## 功能
