@@ -38,14 +38,18 @@ import { mapGetters } from "vuex";
 import adminDashboard from "./admin";
 import editorDashboard from "./editor";
 import { getMapdata } from "@/api/dashboard";
-import point from '@/assets/sbpoint/point.png'
+import pointsuc from '@/assets/sbpoint/sbpointsuc.png'
+import pointwarn from '@/assets/sbpoint/sbpointwarn.png'
+import pointerr from '@/assets/sbpoint/sbpointerr.png'
 export default {
   name: "Dashboard",
   components: { adminDashboard, editorDashboard },
   data() {
     return {
       currentRole: "adminDashboard",
-      point:point,
+      pointsuc:pointsuc,
+      pointwarn:pointwarn,
+      pointerr:pointerr,
       jd:'116.397428',
       wd:'39.90923'
     };
@@ -67,17 +71,7 @@ export default {
       center: [108.5525, 38.3227], //中心点坐标
       viewMode: "3D" //使用3D视图
     });
-    // 创建一个 Icon
-    var Icon = new AMap.Icon({
-        // 图标尺寸
-        size: new AMap.Size(30, 30),
-        // 图标的取图地址
-        image: _this.point,
-        // 图标所用图片大小
-        imageSize: new AMap.Size(30, 30),
-        // 图标取图偏移量
-        imageOffset: new AMap.Pixel(0, 0)
-    });
+    
     getMapdata().then(res => {
       var data = res.data.list;
       console.log(data);
@@ -86,6 +80,25 @@ export default {
         if(!data[i].terminalLongitude||!data[i].terminalLatitude){
           continue;
         }
+        let img = '';
+        if(data[i].onLine==1){
+          img = _this.pointsuc;
+        }else if(data[i].onLine==2){
+          img = _this.pointerr;
+        }else{
+          img = _this.pointwarn;
+        }
+        // 创建一个 Icon
+        let Icon = new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(30, 30),
+            // 图标的取图地址
+            image: img,
+            // 图标所用图片大小
+            imageSize: new AMap.Size(30, 30),
+            // 图标取图偏移量
+            imageOffset: new AMap.Pixel(0, 0)
+        });
         let marker= {
             icon: Icon,
             position: [parseFloat(data[i].terminalLongitude), parseFloat(data[i].terminalLatitude)],
