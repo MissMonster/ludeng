@@ -74,12 +74,19 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    meta: { title: '设备管理', icon: 'system' },
     children: [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: '首页',
         meta: { title: '首页', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'sblist',
+        component: () => import('@/views/sblist/index'),
+        name: '设备列表',
+        meta: { title: '设备列表', icon: 'dashboard', affix: false }
       }
     ]
   },
