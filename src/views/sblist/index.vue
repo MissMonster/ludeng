@@ -83,38 +83,38 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="13">
-            <el-form-item label="设备id" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
+            <el-form-item v-show="hideid" label="设备id" prop="Id">
+              <el-input v-model.number="form.Id" type="number" placeholder="请输入设备id" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="设备名" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
+            <el-form-item label="设备名" prop="terminalName">
+              <el-input v-model="form.terminalName" placeholder="请输入设备名" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="设备地址" prop="phone">
-              <el-input v-model="form.phone" placeholder="请输入手机号码" maxlength="11" />
+            <el-form-item label="设备地址" prop="terminalAddr">
+              <el-input v-model="form.terminalAddr" placeholder="请输入设备地址"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否注册" prop="email">
-              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
+            <el-form-item label="是否注册" type="number" prop="registered">
+              <el-input v-model.number="form.registered" placeholder="请输入是否注册,1注册,2未注册"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="设备ip" prop="username">
-              <el-input v-model="form.username" placeholder="请输入用户名称" />
+            <el-form-item label="设备ip" prop="terminalIp">
+              <el-input v-model="form.terminalIp" placeholder="请输入设备ip" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="经度" prop="username">
-              <el-input v-model="form.username" placeholder="请输入用户名称" />
+            <el-form-item label="经度" prop="terminalLongitude">
+              <el-input v-model="form.terminalLongitude" placeholder="请输入经度" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="纬度" prop="username">
-              <el-input v-model="form.username" placeholder="请输入用户名称" />
+            <el-form-item label="纬度" prop="terminalLatitude">
+              <el-input v-model="form.terminalLatitude" placeholder="请输入纬度" />
             </el-form-item>
           </el-col>
 
@@ -130,17 +130,17 @@
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate, getUserInit } from '@/api/system/sysuser'
-import { getToken } from '@/utils/auth'
 import { treeselect } from '@/api/system/dept'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { terminalList, terminalInfo , addterminal , editterminal , delterminal} from "@/api/sblist";
 export default {
-  name: 'User',
+  name: 'sblist',
   components: { Treeselect },
   data() {
     return {
+      //是否显示弹窗的id
+      hideid:false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -155,45 +155,10 @@ export default {
       sblist: null,
       // 弹出层标题
       title: '',
-      // 部门树选项
-      deptOptions: undefined,
       // 是否显示弹出层*******
-      open: true,
-      // 部门名称
-      deptName: undefined,
-      // 默认密码
-      initPassword: undefined,
-      // 日期范围
-      dateRange: [],
-      // 状态数据字典
-      statusOptions: [],
-      // 性别状态字典
-      sexOptions: [],
-      // 岗位选项
-      postOptions: [],
-      // 角色选项
-      roleOptions: [],
+      open: false,
       // 表单参数
       form: {},
-      defaultProps: {
-        children: 'children',
-        label: 'deptName'
-      },
-      // 用户导入参数
-      upload: {
-        // 是否显示弹出层（用户导入）
-        open: false,
-        // 弹出层标题（用户导入）
-        title: '',
-        // 是否禁用上传
-        isUploading: false,
-        // 是否更新已经存在的用户数据
-        updateSupport: 0,
-        // 设置上传的请求头部
-        headers: { Authorization: 'Bearer ' + getToken() },
-        // 上传的地址
-        url: process.env.VUE_APP_BASE_API + '/system/user/importData'
-      },
       // 查询参数
       queryParams: {
         pageIndex: 1,
@@ -205,41 +170,25 @@ export default {
       },
       // 表单校验
       rules: {
-        username: [
-          { required: true, message: '用户名称不能为空', trigger: 'blur' }
+        terminalName: [
+          { required: true, message: '设备名不能为空', trigger: 'blur' }
         ],
-        nickName: [
-          { required: true, message: '用户昵称不能为空', trigger: 'blur' }
+        terminalAddr: [
+          { required: true, message: '设备地址不能为空', trigger: 'blur' }
         ],
-        deptId: [
-          { required: true, message: '归属部门不能为空', trigger: 'blur' }
+        registered: [
+          { required: true, message: '请输入是否注册,1注册,2未注册', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '用户密码不能为空', trigger: 'blur' }
+        terminalIp: [
+          { required: true, message: '设备ip不能为空', trigger: 'blur' }
         ],
-        email: [
-          { required: true, message: '邮箱地址不能为空', trigger: 'blur' },
-          {
-            type: 'email',
-            message: "'请输入正确的邮箱地址",
-            trigger: ['blur', 'change']
-          }
+        terminalLongitude: [
+          { required: true, message: '经度不能为空', trigger: 'blur' }
         ],
-        phone: [
-          { required: true, message: '手机号码不能为空', trigger: 'blur' },
-          {
-            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: '请输入正确的手机号码',
-            trigger: 'blur'
-          }
+        terminalLatitude: [
+          { required: true, message: '纬度不能为空', trigger: 'blur' }
         ]
       }
-    }
-  },
-  watch: {
-    // 根据名称筛选部门树
-    deptName(val) {
-      this.$refs.tree.filter(val)
     }
   },
   created() {
@@ -249,24 +198,13 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true;
-      terminalList().then(response => {
+      terminalList(this.queryParams).then(response => {
         console.log(response);
         // var data = response.data.list;
         this.sblist = response.data.list
         this.total = response.data.count
         this.loading = false;
       });
-    },
-    /** 转换菜单数据结构 */
-    normalizer(node) {
-      if (node.children && !node.children.length) {
-        delete node.children
-      }
-      return {
-        id: node.deptId,
-        label: node.deptName,
-        children: node.children
-      }
     },
     // 取消按钮
     cancel() {
@@ -276,59 +214,47 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        userId: undefined,
-        deptId: undefined,
-        username: undefined,
-        nickName: undefined,
-        password: undefined,
-        phone: undefined,
-        email: undefined,
-        sex: undefined,
-        status: '0',
-        remark: undefined,
-        postIds: undefined,
-        roleIds: undefined
+        Id: undefined,
+        terminalName: undefined,
+        terminalAddr: undefined,
+        registered: undefined,
+        terminalIp: undefined,
+        terminalLongitude: undefined,
+        terminalLatitude: undefined,
       }
-      this.resetForm('form')
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.userId)
+      this.ids = selection.map(item => item.Id)
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
-      getUserInit().then(response => {
-        this.postOptions = response.data.posts
-        this.roleOptions = response.data.roles
-        this.open = true
-        this.title = '添加用户'
-        this.form.password = this.initPassword
-      })
+        this.open = true;
+        this.title = '添加设备';
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
-      const userId = row.userId || this.ids
-      getUser(userId).then(response => {
+      const sbid = row.Id || this.ids;
+
+      terminalInfo(sbid).then(response => {
+        // console.log(response)
         this.form = response.data
-        this.postOptions = response.posts
-        this.roleOptions = response.roles
-        this.form.postIds = response.postIds[0]
-        this.form.roleIds = response.roleIds[0]
         this.open = true
-        this.title = '修改用户'
-        this.form.password = ''
+        this.title = '修改设备信息'
       })
     },
     /** 提交按钮 */
     submitForm: function() {
+            console.log(this.form.Id)
       this.$refs['form'].validate(valid => {
         if (valid) {
-          if (this.form.userId !== undefined) {
-            updateUser(this.form).then(response => {
+          if (this.form.Id !== undefined) {
+            console.log(this.form)
+            editterminal(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('修改成功')
                 this.open = false
@@ -338,7 +264,7 @@ export default {
               }
             })
           } else {
-            addUser(this.form).then(response => {
+            addterminal(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('新增成功')
                 this.open = false
@@ -353,13 +279,16 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const userIds = row.userId || this.ids
-      this.$confirm('是否确认删除用户编号为"' + userIds + '"的数据项?', '警告', {
+      var id = row.Id || this.ids;
+      id = [].concat(id) 
+      // console.log(id)
+      // return
+      this.$confirm('是否确认删除id为"' + id + '"的数据项?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return delUser(userIds)
+        return delterminal(id)
       }).then(() => {
         this.getList()
         this.msgSuccess('删除成功')

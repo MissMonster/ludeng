@@ -2,17 +2,18 @@ import request from '@/utils/request'
 
 
 // 获取设备列表
-export function terminalList() {
+export function terminalList(query) {
     return request({
         url: '/api/v1/terminalList',
-        method: 'get'
+        method: 'get',
+        params: query
     })
 }
 
 // 查看设备详情
 export function terminalInfo(id) {
     return request({
-        url: '/api/v1/terminalInfo',
+        url: '/api/v1/terminalInfo?id=' + id,
         method: 'get',
         params:id
     })
@@ -37,10 +38,12 @@ export function editterminal(data) {
 }
 
 // 删除设备
-export function delterminal(data) {
+export function delterminal(id) {
     return request({
         url: '/api/v1/delterminal',
-        method: 'DELETE',
-        data
+        method: 'delete',
+        data:{
+            id:id
+        }
     })
 }
