@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <!--用户数据-->
-      <el-col :span="20" :xs="24">
+      <el-col :span="24" :xs="24">
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
@@ -40,9 +40,14 @@
           <el-table-column type="selection" width="45" align="center" />
           <el-table-column label="终端id" align="center" prop="Id" :show-overflow-tooltip="true" />
           <el-table-column label="终端名称" align="center" prop="terminalName" :show-overflow-tooltip="true" />
-          <el-table-column label="终端安装地理位置" align="center" prop="terminalAddr" :show-overflow-tooltip="true" />
-          <el-table-column label="是否注册(1注册，2未注册)" align="center" prop="registered" :show-overflow-tooltip="true" />
-          <el-table-column label="终端IP地址" align="center" prop="terminalIp" width="180" />
+          <el-table-column label="终端安装地理位置" align="center" width="180" prop="terminalAddr" :show-overflow-tooltip="true" />
+          <el-table-column label="是否注册" align="center" :show-overflow-tooltip="true" >
+            <template slot-scope="scope">
+              <span v-if="scope.row.registered == 1">注册</span> 
+              <span v-else>未注册</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="终端IP地址" align="center" prop="terminalIp" width="240" />
           <el-table-column label="经度" align="center" prop="terminalLongitude" :show-overflow-tooltip="true" />
           <el-table-column label="纬度" align="center" prop="terminalLatitude" :show-overflow-tooltip="true" />
           <el-table-column
@@ -97,9 +102,20 @@
               <el-input v-model="form.terminalAddr" placeholder="请输入设备地址"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="是否注册" type="number" prop="registered">
               <el-input v-model.number="form.registered" placeholder="请输入是否注册,1注册,2未注册"/>
+            </el-form-item>
+          </el-col> -->
+          <el-col :span="12">
+            <el-form-item label="是否注册">
+              <el-radio-group v-model="form.registered">
+                <el-radio
+                  v-for="dict in registerOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictValue"
+                >{{ dict.dictLabel }}</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -117,7 +133,18 @@
               <el-input v-model="form.terminalLatitude" placeholder="请输入纬度" />
             </el-form-item>
           </el-col>
-
+          <el-col :span="12" v-if="editflag">
+            <el-form-item label="是否在线" prop="onLine">
+              <!-- <template>
+                <span v-if="scope.row.registered == 1">注册</span> 
+                <span v-else>未注册</span>
+              </template> -->
+              <el-input v-if="form.onLine==1" value="正常" disabled placeholder="请输入是否在线" />
+              <el-input v-if="form.onLine==2" value="断开" disabled placeholder="请输入是否在线" />
+              <el-input v-if="form.onLine==3" value="异常" disabled placeholder="请输入是否在线" />
+              <!-- <el-input v-model="form.onLine" placeholder="请输入是否在线" /> -->
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,6 +166,20 @@ export default {
   components: { Treeselect },
   data() {
     return {
+      // 是否注册
+      registerOptions:[
+        {
+          dictValue:1,
+          dictLabel:'注册'
+        },
+        {
+          dictValue:2,
+          dictLabel:'未注册'
+        }
+      ],
+
+      // 修改时显示
+      editflag:false,
       //是否显示弹窗的id
       hideid:false,
       // 遮罩层
@@ -194,6 +235,17 @@ export default {
   created() {
     this.getList()
   },
+  computed:{
+    onlinecom(){
+      if(this.from.online==1){
+        return '正常'
+      }else if(this.from.online==2){
+        return '断开'
+      }else{
+        return '异常'
+      }
+    }
+  },
   methods: {
     /** 查询用户列表 */
     getList() {
@@ -222,6 +274,7 @@ export default {
         terminalLongitude: undefined,
         terminalLatitude: undefined,
       }
+      this.editflag = false;
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -238,10 +291,11 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
+      this.editflag = true;
       const sbid = row.Id || this.ids;
 
       terminalInfo(sbid).then(response => {
-        // console.log(response)
+        console.log(response)
         this.form = response.data
         this.open = true
         this.title = '修改设备信息'

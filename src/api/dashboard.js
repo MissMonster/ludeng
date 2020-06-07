@@ -8,3 +8,10 @@ export function getMapdata() {
     method: 'get'
   })
 }
+// 获取设备详情
+export function heartData(id) {
+  return request({
+    url: '/api/v1/heartData?id='+id,
+    method: 'get'
+  })
+}
