@@ -361,6 +361,7 @@ export default {
           } else {
             addMenu(this.form).then(response => {
               if (response.code === 200) {
+                console.log(this.form)
                 this.msgSuccess('新增成功')
                 this.open = false
                 this.getList()

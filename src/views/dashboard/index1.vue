@@ -41,6 +41,7 @@ import { getMapdata , heartData } from "@/api/dashboard";
 import pointsuc from '@/assets/sbpoint/sbpointsuc.png'
 import pointwarn from '@/assets/sbpoint/sbpointwarn.png'
 import pointerr from '@/assets/sbpoint/sbpointerr.png'
+import signhas from '@/assets/sign/has.png'
 export default {
   name: "Dashboard",
   components: { adminDashboard, editorDashboard },
@@ -51,7 +52,44 @@ export default {
       pointwarn:pointwarn,
       pointerr:pointerr,
       jd:'116.397428',
-      wd:'39.90923'
+      wd:'39.90923',
+      signhas:signhas,
+      imgUrl:{
+        has:require("@/assets/sign/has.png"),
+        no:require("@/assets/sign/no.png"),
+        sign1:require("@/assets/sign/1.png"),
+        sign2:require("@/assets/sign/2.png"),
+        sign3:require("@/assets/sign/3.png"),
+        sign4:require("@/assets/sign/4.png"),
+        sign5:require("@/assets/sign/5.png"),
+        sign6:require("@/assets/sign/6.png"),
+        sign7:require("@/assets/sign/7.png"),
+        sign8:require("@/assets/sign/8.png"),
+        sign9:require("@/assets/sign/9.png"),
+        sign10:require("@/assets/sign/10.png"),
+        sign11:require("@/assets/sign/11.png"),
+        sign12:require("@/assets/sign/12.png"),
+        sign13:require("@/assets/sign/13.png"),
+        sign14:require("@/assets/sign/14.png"),
+        sign15:require("@/assets/sign/15.png"),
+        sign16:require("@/assets/sign/16.png"),
+        sign17:require("@/assets/sign/17.png"),
+        sign18:require("@/assets/sign/18.png"),
+        sign19:require("@/assets/sign/19.png"),
+        sign20:require("@/assets/sign/20.png"),
+        sign21:require("@/assets/sign/21.png"),
+        sign22:require("@/assets/sign/22.png"),
+        sign23:require("@/assets/sign/23.png"),
+        sign24:require("@/assets/sign/24.png"),
+        sign25:require("@/assets/sign/25.png"),
+        sign26:require("@/assets/sign/26.png"),
+        sign27:require("@/assets/sign/27.png"),
+        sign28:require("@/assets/sign/28.png"),
+        sign29:require("@/assets/sign/29.png"),
+        sign30:require("@/assets/sign/30.png"),
+        sign31:require("@/assets/sign/31.png"),
+        sign32:require("@/assets/sign/32.png"),
+      }
     };
   },
   computed: {
@@ -72,12 +110,58 @@ export default {
       viewMode: "3D" //使用3D视图
     });
     var markers = [];
-    var infoWindow;
+    function tempclick(temp){
+      var infoWindow1;
+      temp.on('click',function(e){
+        console.log(temp)
+        console.log(e)
+          var id = e.target.Ce.id;
+          var jd = e.lnglat.lng;
+          var wd = e.lnglat.lat;
+          map.setCenter(temp.w.position);
+          map.setZoom(10);
+          setTimeout(getdata,500)
+          function getdata(){
+            heartData(id).then(response => {
+              var data = response.data;
+              //构建信息窗体中显示的内容
+              var info = [];
+              info.push(
+                `<div style="width:350px;">
+                  <div>
+                    经度 : ${data.latit}<br/>
+                    纬度 : ${data.longit}<br/>
+                    温度 : ${data.temperature}<br/>
+                    IN1 : ${data.inOne}<br/>
+                    IN2 : ${data.inTwo}<br/>
+                    IN3 : ${data.inThree}<br/>
+                    IN4 : ${data.inFour}<br/>
+                    IN5 : ${data.inFive}<br/>
+                    IN6 : ${data.inSix}<br/>
+                    IN7 : ${data.inSeven}<br/>
+                    DOOR : ${data.door}<br/>
+                    ACIN : ${data.acIn}<br/>
+                    手动使能 : ${data.fourManual}<br/>
+                    今天:0x00开灯经纬度;每天:0x01开灯固定 : ${data.fourOpenMode}<br/>
+                    今天:0x00关灯经纬度;每天:0x01关灯固定 : ${data.fourCloseMode}<br/>
+                    开 时分 : ${data.fourOpenTime}<br/>
+                    关 时分 : ${data.fourCloseTime}<br/>
+                    继电器是否打开 : ${data.fourOnF}<br/>
+                    漏保状态 : ${data.iof}<br/>
+                    脱扣状态 : ${data.iLock}<br/>
+                  </div>
+                </div>`
+              );
+              infoWindow1 = new AMap.InfoWindow({
+                  content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+              });
+              infoWindow1.open(map, temp.w.position);
+            })
+          }
+      })
+    }
     getMapdata().then(res => {
       var data = res.data.list;
-      // console.log(data);
-      
-      
       for (let i = 0; i < data.length; i++) {
         if(!data[i].terminalLongitude||!data[i].terminalLatitude){
           continue;
@@ -107,133 +191,79 @@ export default {
             id:data[i].Id
         }
         markers.push(marker);
-      }    
+      }
       markers.forEach(function(marker) {
-	        let temp = new AMap.Marker({
+	        let temp=new AMap.Marker({
 	            map: map,
 	            icon: marker.icon,
 	            position: [marker.position[0], marker.position[1]],
               offset: new AMap.Pixel(0, 0),
               id:marker.id
           });
-          
-          temp.on('click',function(e){
-            console.log(e)
-              var id = e.target.Ce.id;
-              var jd = e.lnglat.lng;
-              var wd = e.lnglat.lat;
-              map.setCenter([jd, wd]);
-              map.setZoom(10);
-              setTimeout(getdata,500)
-              function getdata(){
-                heartData(id).then(response => {
-                  var data = response.data;
-                  //构建信息窗体中显示的内容
-                  var info = [];
-                  info.push(
-                    `<div style="width:350px;">
-                      <div>
-                        经度 : ${data.latit}<br/>
-                        纬度 : ${data.longit}<br/>
-                        温度 : ${data.temperature}<br/>
-                        IN1 : ${data.inOne}<br/>
-                        IN2 : ${data.inTwo}<br/>
-                        IN3 : ${data.inThree}<br/>
-                        IN4 : ${data.inFour}<br/>
-                        IN5 : ${data.inFive}<br/>
-                        IN6 : ${data.inSix}<br/>
-                        IN7 : ${data.inSeven}<br/>
-                        DOOR : ${data.door}<br/>
-                        ACIN : ${data.acIn}<br/>
-                        手动使能 : ${data.fourManual}<br/>
-                        今天:0x00开灯经纬度;每天:0x01开灯固定 : ${data.fourOpenMode}<br/>
-                        今天:0x00关灯经纬度;每天:0x01关灯固定 : ${data.fourCloseMode}<br/>
-                        开 时分 : ${data.fourOpenTime}<br/>
-                        关 时分 : ${data.fourCloseTime}<br/>
-                        继电器是否打开 : ${data.fourOnF}<br/>
-                        漏保状态 : ${data.iof}<br/>
-                        脱扣状态 : ${data.iLock}<br/>
-                      </div>
-                    </div>`
-                  );
-                  infoWindow = new AMap.InfoWindow({
-                      content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+          tempclick(temp);
+      })
+      var ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
+      //连接打开时触发 
+      ws.onopen = function(evt) {  
+          console.log("Connection open ...");  
+          ws.send("Hello WebSockets!");
+          ws.send("ping");  
+      };  
+      //接收到消息时触发  
+      ws.onmessage = function(evt) { 
+          console.log(evt.data)
+          if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
+            var res = JSON.parse(evt.data);
+            var id = res.terminalId;
+            var gprsRssi = res.gprsRssi;
+            console.log(markers)
+            console.log(id)
+            console.log(gprsRssi)
+            var infoWindow = new AMap.InfoWindow({offset: 0});
+            markers.forEach(function(marker) {
+                if(marker.id==id){            
+                  let temp = new AMap.Marker({
+                      map: map,
+                      icon: marker.icon,
+                      position: [marker.position[0], marker.position[1]],
+                      offset: new AMap.Pixel(0, 0),
+                      id:marker.id
                   });
-                  infoWindow.open(map, map.getCenter());
-                })
-              }
-          })
-      });
-      
-      var newCenter = map.setFitView();
-      
-    });
+                  var info = [];
+                  if(gprsRssi==0){
+                    info.push(
+                      '<br/><div><img src="'+_this.imgUrl["sign"+gprsRssi]+'"><img src="'+_this.imgUrl.no+'"></div>'
+                    )
+                  }else{
+                    info.push(
+                      '<br/><div><img src="'+_this.imgUrl["sign"+gprsRssi]+'"><img src="'+_this.imgUrl.has+'"></div>'
+                    )
+                  }
+                  infoWindow.setContent(info.join("<br/>"));
+                  infoWindow.open(map, marker.position);
+                  tempclick(temp)
+                }else{
+                  let temp1=new AMap.Marker({
+                      map: map,
+                      icon: marker.icon,
+                      position: [marker.position[0], marker.position[1]],
+                      offset: new AMap.Pixel(0, 0),
+                      id:marker.id
+                  });
+                  tempclick(temp1)
+                }
+                
+            })
+            map.setFitView();
+          }
+      };  
+      //连接关闭时触发  
+      ws.onclose = function(evt) {  
+          console.log("Connection closed.");  
+      }; 
 
-    var ws = new WebSocket("ws://hoyware.com.cn/api/v1/ws");  
-    //连接打开时触发 
-    ws.onopen = function(evt) {  
-        console.log("Connection open ...");  
-        ws.send("Hello WebSockets!");
-        ws.send("ping");  
-    };  
-    //接收到消息时触发  
-    ws.onmessage = function(evt) { 
-        // var markers = []; 
-        // console.log(markers);
-        // console.log(evt)
-        var res;
-        if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
-          res = JSON.parse(evt.data);
-        }
-        console.log(res);
-        var id = res.terminalId;
-        var gprsRssi = res.gprsRssi;
-        var layer = new AMap.LabelsLayer({
-            zooms: [3, 20],
-            zIndex: 1000,
-            // 开启标注避让，默认为开启，v1.4.15 新增属性
-            collision: true,
-            // 开启标注淡入动画，默认为开启，v1.4.15 新增属性
-            animation: true,
-        });
-        map.add(layer);
-        var markers2 = [];
-        var curData;
-        for(var i=0;i<markers.length;i++){
-          (function(i){
-            if(markers[i].id==id){
-              curData = markers[i];
-            }
-          })(i)         
-        }
-        console.log(curData)
-        var info2=[];
-        if(gprsRssi==0){
-          info2.push(
-            `<div><img src="../../assets/sign/${gprsRssi}.png"><img src="../../assets/sign/no.png"></div>`
-          )
-        }else{
-          info2.push(
-            `<div><img src="../../assets/sign/${gprsRssi}.png"><img src="../../assets/sign/has.png"></div>`
-          )
-        }
-        
-        curData.text = {
-          content:info2.join("<br/>")
-        }
-        var labelMarker = new AMap.LabelMarker(curData);
-        markers.push(labelMarker);
 
-        layer.add(labelMarker);
-
-        map.setFitView();
-          
-    };  
-    //连接关闭时触发  
-    ws.onclose = function(evt) {  
-        console.log("Connection closed.");  
-    };  
-
+    })
 
 
 
@@ -248,11 +278,9 @@ export default {
         });
       }
       map.setCenter([jd, wd]);
-      infoWindow.close();
     })
     $('#reset').on('click',function(){
-      var newCenter = map.setFitView();
-      infoWindow.close();
+      map.setFitView();
     })
 
   }

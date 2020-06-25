@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '综合监控管理系统',
+      title: '路灯监控管理系统',
       logo: 'https://gitee.com/mydearzwj/image/raw/master/img/go-admin.png'
     }
   }
