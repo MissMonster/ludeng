@@ -15,3 +15,4 @@ export function heartData(id) {
     method: 'get'
   })
 }
+

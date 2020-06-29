@@ -47,3 +47,30 @@ export function delterminal(id) {
         }
     })
 }
+
+
+// 获取招测列表
+export function heartList(query) {
+    return request({
+        url: '/api/v1/heartList',
+        method: 'get',
+        params: query
+    })
+}
+
+// 数据下发
+export function sendHeartByTerminalId(terminalId) {
+    return request({
+      url: '/api/v1/sendHeartByTerminalId/'+terminalId,
+      method: 'get'
+    })
+  }
+
+
+  // 查看招测详情
+export function heartInfo(id) {
+    return request({
+        url: '/api/v1/heartInfo?terminalId=' + id,
+        method: 'get'
+    })
+}

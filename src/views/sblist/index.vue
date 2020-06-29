@@ -1,74 +1,54 @@
 <template>
   <div class="app-container">
+    <div class="pagetitle">招测全部设备</div>
     <el-row :gutter="20">
-      <!--用户数据-->
+      <!--数据-->
       <el-col :span="24" :xs="24">
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="primary"
-              icon="el-icon-plus"
-              size="mini"
-              @click="handleAdd"
-            >新增</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              icon="el-icon-edit"
-              size="mini"
-              :disabled="single"
-              @click="handleUpdate"
-            >修改</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              :disabled="multiple"
-              @click="handleDelete"
-            >删除</el-button>
-          </el-col>
-        </el-row>
-
         <el-table
+        border
           v-loading="loading"
           :data="sblist"
-          @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="45" align="center" />
-          <el-table-column label="终端id" align="center" prop="Id" :show-overflow-tooltip="true" />
-          <el-table-column label="终端名称" align="center" prop="terminalName" :show-overflow-tooltip="true" />
-          <el-table-column label="终端安装地理位置" align="center" width="180" prop="terminalAddr" :show-overflow-tooltip="true" />
-          <el-table-column label="是否注册" align="center" :show-overflow-tooltip="true" >
-            <template slot-scope="scope">
-              <span v-if="scope.row.registered == 1">注册</span> 
-              <span v-else>未注册</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="终端IP地址" align="center" prop="terminalIp" width="240" />
-          <el-table-column label="经度" align="center" prop="terminalLongitude" :show-overflow-tooltip="true" />
-          <el-table-column label="纬度" align="center" prop="terminalLatitude" :show-overflow-tooltip="true" />
+          <el-table-column label="设备id" align="center" prop="terminalId" :show-overflow-tooltip="true" />
+          <el-table-column label="设备名称" align="center" prop="terminalName" :show-overflow-tooltip="true" />
+          <el-table-column label="所在区域" align="center" prop="areaProvince" :show-overflow-tooltip="true" />
+          <el-table-column label="安装地点" align="center" prop="terminalAddr" :show-overflow-tooltip="true" />
+          <el-table-column label="总亮灯率" align="center" prop="rol" :show-overflow-tooltip="true" />
+          <el-table-column label="Ua" align="center" prop="ua" :show-overflow-tooltip="true" />
+          <el-table-column label="Ub" align="center" prop="ub" :show-overflow-tooltip="true" />
+          <el-table-column label="Uc" align="center" prop="uc" :show-overflow-tooltip="true" />
+          <el-table-column label="L1" align="center" prop="relay_one_onf" :show-overflow-tooltip="true" />
+          <el-table-column label="L2" align="center" prop="relay_two_onf" :show-overflow-tooltip="true" />
+          <el-table-column label="L3" align="center" prop="relay_three_onf" :show-overflow-tooltip="true" />
+          <el-table-column label="L4" align="center" prop="relay_four_onf" :show-overflow-tooltip="true" />
+          <el-table-column label="IN1" align="center" prop="inOne" :show-overflow-tooltip="true" />
+          <el-table-column label="IN2" align="center" prop="inTwo" :show-overflow-tooltip="true" />
+          <el-table-column label="IN3" align="center" prop="inThree" :show-overflow-tooltip="true" />
+          <el-table-column label="IN4" align="center" prop="inFour" :show-overflow-tooltip="true" />
+          <el-table-column label="柜门" align="center" prop="door" :show-overflow-tooltip="true" />
+          <el-table-column label="温度" align="center" prop="temperature" :show-overflow-tooltip="true" />
+          <el-table-column label="终端供电" align="center" prop="acIn" :show-overflow-tooltip="true" />
+          <el-table-column label="在线/离线" align="center" prop="onLinetxt" :show-overflow-tooltip="true" />
+
           <el-table-column
             label="操作"
             align="center"
-            width="220"
-            class-name="small-padding fixed-width"
+            fixed="right"
+            width="150"
           >
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
-                @click="handleUpdate(scope.row)"
-              >修改</el-button>
+                @click="handlezc(scope.row)"
+              >招测</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click="handleDelete(scope.row)"
-              >删除</el-button>
+                @click="handleck(scope.row)"
+              >查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -83,74 +63,27 @@
       </el-col>
     </el-row>
 
-    <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <!-- 添加或查看参数配置对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="700px">
+      <el-form ref="form" :model="form"  label-width="80px">
         <el-row>
-          <el-col :span="13">
-            <el-form-item v-show="hideid" label="设备id" prop="Id">
-              <el-input v-model.number="form.Id" type="number" placeholder="请输入设备id" />
+          <el-col :span="12">
+            <el-form-item label="设备id" prop="terminalId">
+              <el-input disabled v-model="form.terminalId"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="设备名" prop="terminalName">
-              <el-input v-model="form.terminalName" placeholder="请输入设备名" />
+              <el-input disabled v-model="form.terminalName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="设备地址" prop="terminalAddr">
-              <el-input v-model="form.terminalAddr" placeholder="请输入设备地址"/>
-            </el-form-item>
-          </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="是否注册" type="number" prop="registered">
-              <el-input v-model.number="form.registered" placeholder="请输入是否注册,1注册,2未注册"/>
-            </el-form-item>
-          </el-col> -->
-          <el-col :span="12">
-            <el-form-item label="是否注册">
-              <el-radio-group v-model="form.registered">
-                <el-radio
-                  v-for="dict in registerOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictValue"
-                >{{ dict.dictLabel }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="设备ip" prop="terminalIp">
-              <el-input v-model="form.terminalIp" placeholder="请输入设备ip" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="经度" prop="terminalLongitude">
-              <el-input v-model="form.terminalLongitude" placeholder="请输入经度" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="纬度" prop="terminalLatitude">
-              <el-input v-model="form.terminalLatitude" placeholder="请输入纬度" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="editflag">
-            <el-form-item label="是否在线" prop="onLine">
-              <!-- <template>
-                <span v-if="scope.row.registered == 1">注册</span> 
-                <span v-else>未注册</span>
-              </template> -->
-              <el-input v-if="form.onLine==1" value="正常" disabled placeholder="请输入是否在线" />
-              <el-input v-if="form.onLine==2" value="断开" disabled placeholder="请输入是否在线" />
-              <el-input v-if="form.onLine==3" value="异常" disabled placeholder="请输入是否在线" />
-              <!-- <el-input v-model="form.onLine" placeholder="请输入是否在线" /> -->
+              <el-input disabled v-model="form.terminalAddr" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
     </el-dialog>
 
   </div>
@@ -160,7 +93,8 @@
 import { treeselect } from '@/api/system/dept'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { terminalList, terminalInfo , addterminal , editterminal , delterminal} from "@/api/sblist";
+import { getMapdata , heartData } from "@/api/dashboard"
+import { terminalList, terminalInfo , addterminal , editterminal , heartList , sendHeartByTerminalId ,heartInfo} from "@/api/sblist"
 export default {
   name: 'sblist',
   components: { Treeselect },
@@ -177,9 +111,6 @@ export default {
           dictLabel:'未注册'
         }
       ],
-
-      // 修改时显示
-      editflag:false,
       //是否显示弹窗的id
       hideid:false,
       // 遮罩层
@@ -233,7 +164,11 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getList();
+
+    
+
+
   },
   computed:{
     onlinecom(){
@@ -249,19 +184,57 @@ export default {
   methods: {
     /** 查询用户列表 */
     getList() {
+      var _this = this;
       this.loading = true;
-      terminalList(this.queryParams).then(response => {
+      heartList(this.queryParams).then(response => {
         console.log(response);
         // var data = response.data.list;
-        this.sblist = response.data.list
-        this.total = response.data.count
+        this.sblist = response.data.list;
+        for(var i=0;i<this.sblist.length;i++){
+          if(this.sblist[i].onLine==1){
+            this.sblist[i].onLinetxt="在线";
+          }else if(this.sblist[i].onLine==2){
+            this.sblist[i].onLinetxt="离线";
+          }else{
+            this.sblist[i].onLinetxt="异常";
+          }
+        }
+
+        this.total = response.data.count;
         this.loading = false;
+
+        var ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
+      //连接打开时触发 
+      ws.onopen = function(evt) {  
+          console.log("Connection open ...");  
+          ws.send("Hello WebSockets!");
+          ws.send("ping");  
+      };  
+      //接收到消息时触发  
+      ws.onmessage = function(evt) { 
+        // var evt={};
+        // evt.data={"gprsRssi":20,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":1,"relay_two_onf":1,"relay_three_onf":1,"relay_four_onf":1,"temperature":"32","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0};
+          console.log(evt.data)
+          if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
+            var aaa = JSON.parse(evt.data);
+            console.log(typeof aaa)
+            console.log(_this.sblist)
+            for(var i=0;i<_this.sblist.length;i++){
+              if(_this.sblist[i].terminalId==aaa.terminalId){
+                
+                _this.$set(_this.sblist[i],Object.assign(_this.sblist[i], aaa))
+              }
+            }      
+          }
+      };  
+      //连接关闭时触发  
+      ws.onclose = function(evt) {  
+          console.log("Connection closed.");  
+      };
+
+
+
       });
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false
-      this.reset()
     },
     // 表单重置
     reset() {
@@ -274,80 +247,44 @@ export default {
         terminalLongitude: undefined,
         terminalLatitude: undefined,
       }
-      this.editflag = false;
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.Id)
-      this.single = selection.length !== 1
-      this.multiple = !selection.length
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset()
-        this.open = true;
-        this.title = '添加设备';
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset()
-      this.editflag = true;
-      const sbid = row.Id || this.ids;
-
-      terminalInfo(sbid).then(response => {
+    /** 查看按钮操作 */
+    handleck(row) {
+      this.$message({
+          message: "敬请期待",
+          type: 'warning'
+        });
+        return;
+      var id = row.terminalId;
+      console.log(id)
+      heartInfo(id).then(response => {
         console.log(response)
         this.form = response.data
         this.open = true
-        this.title = '修改设备信息'
+        this.title = '查看设备信息'
       })
     },
-    /** 提交按钮 */
-    submitForm: function() {
-            console.log(this.form.Id)
-      this.$refs['form'].validate(valid => {
-        if (valid) {
-          if (this.form.Id !== undefined) {
-            console.log(this.form)
-            editterminal(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess('修改成功')
-                this.open = false
-                this.getList()
-              } else {
-                this.msgError(response.msg)
-              }
-            })
-          } else {
-            addterminal(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
-              } else {
-                this.msgError(response.msg)
-              }
-            })
-          }
-        }
+    /** 点击招测操作 */
+    handlezc(row) {
+      var id = row.terminalId;
+      console.log("点击招测")
+      console.log(id);
+      sendHeartByTerminalId(id).then(response => {
+        // console.log(response)
+        this.$message({
+          message: response.msg,
+          type: 'success'
+        });
       })
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      var id = row.Id || this.ids;
-      id = [].concat(id) 
-      // console.log(id)
-      // return
-      this.$confirm('是否确认删除id为"' + id + '"的数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(function() {
-        return delterminal(id)
-      }).then(() => {
-        this.getList()
-        this.msgSuccess('删除成功')
-      }).catch(function() {})
     }
   }
 }
 </script>
+<style scoped>
+.pagetitle{
+  text-align:center;
+  margin-bottom: 30px;
+  font-size: 30px;
+  line-height: 50px;
+}
+</style>
