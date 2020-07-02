@@ -1,35 +1,37 @@
 <template>
   <div class="app-container">
-    <div class="pagetitle">招测全部设备</div>
+    <div class="obox">
+      <el-button @click="zcqb" type="success">招测全部设备</el-button>
+    </div>
     <el-row :gutter="20">
       <!--数据-->
       <el-col :span="24" :xs="24">
         <el-table
+        stripe
         border
           v-loading="loading"
           :data="sblist"
         >
           <el-table-column label="设备id" align="center" prop="terminalId" :show-overflow-tooltip="true" />
           <el-table-column label="设备名称" align="center" prop="terminalName" :show-overflow-tooltip="true" />
-          <el-table-column label="所在区域" align="center" prop="areaProvince" :show-overflow-tooltip="true" />
-          <el-table-column label="安装地点" align="center" prop="terminalAddr" :show-overflow-tooltip="true" />
-          <el-table-column label="总亮灯率" align="center" prop="rol" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="总亮灯率" align="center" prop="rol" :show-overflow-tooltip="true" />
           <el-table-column label="Ua" align="center" prop="ua" :show-overflow-tooltip="true" />
           <el-table-column label="Ub" align="center" prop="ub" :show-overflow-tooltip="true" />
           <el-table-column label="Uc" align="center" prop="uc" :show-overflow-tooltip="true" />
-          <el-table-column label="L1" align="center" prop="relay_one_onf" :show-overflow-tooltip="true" />
-          <el-table-column label="L2" align="center" prop="relay_two_onf" :show-overflow-tooltip="true" />
-          <el-table-column label="L3" align="center" prop="relay_three_onf" :show-overflow-tooltip="true" />
-          <el-table-column label="L4" align="center" prop="relay_four_onf" :show-overflow-tooltip="true" />
-          <el-table-column label="IN1" align="center" prop="inOne" :show-overflow-tooltip="true" />
-          <el-table-column label="IN2" align="center" prop="inTwo" :show-overflow-tooltip="true" />
-          <el-table-column label="IN3" align="center" prop="inThree" :show-overflow-tooltip="true" />
-          <el-table-column label="IN4" align="center" prop="inFour" :show-overflow-tooltip="true" />
-          <el-table-column label="柜门" align="center" prop="door" :show-overflow-tooltip="true" />
-          <el-table-column label="温度" align="center" prop="temperature" :show-overflow-tooltip="true" />
-          <el-table-column label="终端供电" align="center" prop="acIn" :show-overflow-tooltip="true" />
-          <el-table-column label="在线/离线" align="center" prop="onLinetxt" :show-overflow-tooltip="true" />
-
+          <el-table-column width="50" label="L1" align="center" prop="relay_one_onf" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="L2" align="center" prop="relay_two_onf" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="L3" align="center" prop="relay_three_onf" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="L4" align="center" prop="relay_four_onf" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="IN1" align="center" prop="inOne" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="IN2" align="center" prop="inTwo" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="IN3" align="center" prop="inThree" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="IN4" align="center" prop="inFour" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="柜门" align="center" prop="door" :show-overflow-tooltip="true" />
+          <el-table-column width="80" label="温度" align="center" prop="temperature" :show-overflow-tooltip="true" />
+          <el-table-column width="50" label="终端供电" align="center" prop="acIn" :show-overflow-tooltip="true" />
+          <el-table-column width="60" label="在线/离线" align="center" prop="onLine" :show-overflow-tooltip="true" />
+          <el-table-column label="所在区域" align="center" prop="areaProvince" :show-overflow-tooltip="true" />
+          <el-table-column width="200" label="安装地点" align="center" prop="terminalAddr" :show-overflow-tooltip="true" />
           <el-table-column
             label="操作"
             align="center"
@@ -94,7 +96,7 @@ import { treeselect } from '@/api/system/dept'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { getMapdata , heartData } from "@/api/dashboard"
-import { terminalList, terminalInfo , addterminal , editterminal , heartList , sendHeartByTerminalId ,heartInfo} from "@/api/sblist"
+import { terminalList, terminalInfo , addterminal , editterminal , heartList , sendHeartByTerminalId ,heartInfo ,sendHeartAll} from "@/api/sblist"
 export default {
   name: 'sblist',
   components: { Treeselect },
@@ -171,15 +173,6 @@ export default {
 
   },
   computed:{
-    onlinecom(){
-      if(this.from.online==1){
-        return '正常'
-      }else if(this.from.online==2){
-        return '断开'
-      }else{
-        return '异常'
-      }
-    }
   },
   methods: {
     /** 查询用户列表 */
@@ -187,18 +180,18 @@ export default {
       var _this = this;
       this.loading = true;
       heartList(this.queryParams).then(response => {
-        console.log(response);
+        // console.log(response);
         // var data = response.data.list;
         this.sblist = response.data.list;
-        for(var i=0;i<this.sblist.length;i++){
-          if(this.sblist[i].onLine==1){
-            this.sblist[i].onLinetxt="在线";
-          }else if(this.sblist[i].onLine==2){
-            this.sblist[i].onLinetxt="离线";
-          }else{
-            this.sblist[i].onLinetxt="异常";
-          }
-        }
+        // for(var i=0;i<this.sblist.length;i++){
+        //   if(this.sblist[i].onLine==1){
+        //     this.sblist[i].onLinetxt="在线";
+        //   }else if(this.sblist[i].onLine==2){
+        //     this.sblist[i].onLinetxt="离线";
+        //   }else{
+        //     this.sblist[i].onLinetxt="异常";
+        //   }
+        // }
 
         this.total = response.data.count;
         this.loading = false;
@@ -206,7 +199,7 @@ export default {
         var ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
       //连接打开时触发 
       ws.onopen = function(evt) {  
-          console.log("Connection open ...");  
+          // console.log("Connection open ...");  
           ws.send("Hello WebSockets!");
           ws.send("ping");  
       };  
@@ -214,11 +207,10 @@ export default {
       ws.onmessage = function(evt) { 
         // var evt={};
         // evt.data={"gprsRssi":20,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":1,"relay_two_onf":1,"relay_three_onf":1,"relay_four_onf":1,"temperature":"32","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0};
-          console.log(evt.data)
+          // console.log(evt.data)
           if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
             var aaa = JSON.parse(evt.data);
-            console.log(typeof aaa)
-            console.log(_this.sblist)
+            // console.log(_this.sblist)
             for(var i=0;i<_this.sblist.length;i++){
               if(_this.sblist[i].terminalId==aaa.terminalId){
                 
@@ -226,10 +218,10 @@ export default {
               }
             }      
           }
-      };  
+      };
       //连接关闭时触发  
       ws.onclose = function(evt) {  
-          console.log("Connection closed.");  
+          // console.log("Connection closed.");  
       };
 
 
@@ -250,12 +242,12 @@ export default {
     },
     /** 查看按钮操作 */
     handleck(row) {
-      this.$message({
-          message: "敬请期待",
-          type: 'warning'
-        });
-        return;
-      var id = row.terminalId;
+      // this.$message({
+      //     message: "敬请期待",
+      //     type: 'warning'
+      //   });
+        // return;
+      var id = row.id;
       console.log(id)
       heartInfo(id).then(response => {
         console.log(response)
@@ -267,10 +259,19 @@ export default {
     /** 点击招测操作 */
     handlezc(row) {
       var id = row.terminalId;
-      console.log("点击招测")
-      console.log(id);
+      // console.log("点击招测")
+      // console.log(id);
       sendHeartByTerminalId(id).then(response => {
         // console.log(response)
+        this.$message({
+          message: response.msg,
+          type: 'success'
+        });
+      })
+    },
+    // 招测全部
+    zcqb(){
+      sendHeartAll().then(response =>{
         this.$message({
           message: response.msg,
           type: 'success'
@@ -281,10 +282,7 @@ export default {
 }
 </script>
 <style scoped>
-.pagetitle{
-  text-align:center;
-  margin-bottom: 30px;
-  font-size: 30px;
-  line-height: 50px;
+.obox{
+  margin-bottom: 20px;
 }
 </style>

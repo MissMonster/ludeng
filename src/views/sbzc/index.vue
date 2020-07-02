@@ -4,6 +4,7 @@
       <!--用户数据-->
       <el-col :span="24" :xs="24">
         <el-table
+        stripe
           v-loading="loading"
           :data="sblist"
           @selection-change="handleSelectionChange"

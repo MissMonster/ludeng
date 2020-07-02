@@ -66,11 +66,18 @@ export function sendHeartByTerminalId(terminalId) {
     })
   }
 
+//   全部招测
+export function sendHeartAll() {
+    return request({
+      url: '/api/v1/sendHeartAll',
+      method: 'get'
+    })
+  }
 
   // 查看招测详情
 export function heartInfo(id) {
     return request({
-        url: '/api/v1/heartInfo?terminalId=' + id,
+        url: '/api/v1/heartInfo?id=' + id,
         method: 'get'
     })
 }
