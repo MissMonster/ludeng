@@ -36,6 +36,11 @@ Vue.prototype.addDateRange = addDateRange
 Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.download = download
 
+Vue.prototype.print = (obj,type) => {
+  type = type || "log";
+  const log = JSON.parse(JSON.stringify(obj));
+  console[type](log)
+}
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
