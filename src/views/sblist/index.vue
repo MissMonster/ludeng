@@ -50,7 +50,7 @@
                 type="text"
                 icon="el-icon-view"
                 @click="handleck(scope.row)"
-              >查看</el-button>
+              >详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -460,23 +460,23 @@ export default {
           response.data.one_on_f = '关'
         }
         if(response.data.one_manual){
-          response.data.one_manual = '手动模式'
+          response.data.one_manual = '手动'
         }else{
-          response.data.one_manual = '自动模式'
+          response.data.one_manual = '自动'
         }
         if(response.data.one_open_mode){
-          response.data.one_open_mode = '每天开'
+          response.data.one_open_mode = '每天'
         }else{
-          response.data.one_open_mode = '今天开'
+          response.data.one_open_mode = '今天'
         }
         response.data.one_open_hour = this.toDouble(response.data.one_open_hour);
         response.data.one_open_minute = this.toDouble(response.data.one_open_minute);
         response.data.one_close_hour = this.toDouble(response.data.one_close_hour);
         response.data.one_close_minute = this.toDouble(response.data.one_close_minute);
         if(response.data.one_close_mode){
-          response.data.one_close_mode = '每天关'
+          response.data.one_close_mode = '每天'
         }else{
-          response.data.one_close_mode = '今天关'
+          response.data.one_close_mode = '今天'
         }
         
         if(response.data.two_on_f){
@@ -485,23 +485,23 @@ export default {
           response.data.two_on_f = '关'
         }
         if(response.data.two_manual){
-          response.data.two_manual = '手动模式'
+          response.data.two_manual = '手动'
         }else{
-          response.data.two_manual = '自动模式'
+          response.data.two_manual = '自动'
         }
         response.data.two_open_hour = this.toDouble(response.data.two_open_hour);
         response.data.two_open_minute = this.toDouble(response.data.two_open_minute);
         response.data.two_close_hour = this.toDouble(response.data.two_close_hour);
         response.data.two_close_minute = this.toDouble(response.data.two_close_minute);
         if(response.data.two_open_mode){
-          response.data.two_open_mode = '每天开'
+          response.data.two_open_mode = '每天'
         }else{
-          response.data.two_open_mode = '今天开'
+          response.data.two_open_mode = '今天'
         }
         if(response.data.two_close_mode){
-          response.data.two_close_mode = '每天关'
+          response.data.two_close_mode = '每天'
         }else{
-          response.data.two_close_mode = '今天关'
+          response.data.two_close_mode = '今天'
         }
 
         if(response.data.three_on_f){
@@ -510,23 +510,23 @@ export default {
           response.data.three_on_f = '关'
         }
         if(response.data.three_manual){
-          response.data.three_manual = '手动模式'
+          response.data.three_manual = '手动'
         }else{
-          response.data.three_manual = '自动模式'
+          response.data.three_manual = '自动'
         }
         response.data.three_open_hour = this.toDouble(response.data.three_open_hour);
         response.data.three_open_minute = this.toDouble(response.data.three_open_minute);
         response.data.three_close_hour = this.toDouble(response.data.three_close_hour);
         response.data.three_close_minute = this.toDouble(response.data.three_close_minute);
         if(response.data.three_open_mode){
-          response.data.three_open_mode = '每天开'
+          response.data.three_open_mode = '每天'
         }else{
-          response.data.three_open_mode = '今天开'
+          response.data.three_open_mode = '今天'
         }
         if(response.data.three_close_mode){
-          response.data.three_close_mode = '每天关'
+          response.data.three_close_mode = '每天'
         }else{
-          response.data.three_close_mode = '今天关'
+          response.data.three_close_mode = '今天'
         }
 
         if(response.data.four_on_f){
@@ -535,23 +535,23 @@ export default {
           response.data.four_on_f = '关'
         }
         if(response.data.four_manual){
-          response.data.four_manual = '手动模式'
+          response.data.four_manual = '手动'
         }else{
-          response.data.four_manual = '自动模式'
+          response.data.four_manual = '自动'
         }
         response.data.four_open_hour = this.toDouble(response.data.four_open_hour);
         response.data.four_open_minute = this.toDouble(response.data.four_open_minute);
         response.data.four_close_hour = this.toDouble(response.data.four_close_hour);
         response.data.four_close_minute = this.toDouble(response.data.four_close_minute);
         if(response.data.four_open_mode){
-          response.data.four_open_mode = '每天开'
+          response.data.four_open_mode = '每天'
         }else{
-          response.data.four_open_mode = '今天开'
+          response.data.four_open_mode = '今天'
         }
         if(response.data.four_close_mode){
-          response.data.four_close_mode = '每天关'
+          response.data.four_close_mode = '每天'
         }else{
-          response.data.four_close_mode = '今天关'
+          response.data.four_close_mode = '今天'
         }
 
 
@@ -578,27 +578,27 @@ export default {
         response.data.ub = response.data.ub + 'V';
         response.data.uc = response.data.uc + 'V';
 
-        response.data.ia = response.data.ia + 'A';
-        response.data.ib = response.data.ib + 'A';
-        response.data.ic = response.data.ic + 'A';
+        response.data.ia = parseFloat(response.data.ia*response.data.ct1).toFixed(3) + 'A';
+        response.data.ib = parseFloat(response.data.ib*response.data.ct1).toFixed(3) + 'A';
+        response.data.ic = parseFloat(response.data.ic*response.data.ct1).toFixed(3) + 'A';
 
         if(response.data.ie_card){
-          response.data.ie_card = '有采集卡'
+          response.data.ie_card = '有'
         }else{
-          response.data.ie_card = '无采集卡'
+          response.data.ie_card = '无'
         }
 
-        response.data.i2a = response.data.i2a + 'A';
-        response.data.i2b = response.data.i2b + 'A';
-        response.data.i2c = response.data.i2c + 'A';
+        response.data.i2a = parseFloat(response.data.i2a*response.data.ct2).toFixed(3) + 'A';
+        response.data.i2b = parseFloat(response.data.i2b*response.data.ct2).toFixed(3) + 'A';
+        response.data.i2c = parseFloat(response.data.i2c*response.data.ct2).toFixed(3) + 'A';
 
-        response.data.i3a = response.data.i3a + 'A';
-        response.data.i3b = response.data.i3b + 'A';
-        response.data.i3c = response.data.i3c + 'A';
+        response.data.i3a = parseFloat(response.data.i3a*response.data.ct3).toFixed(3) + 'A';
+        response.data.i3b = parseFloat(response.data.i3b*response.data.ct3).toFixed(3) + 'A';
+        response.data.i3c = parseFloat(response.data.i3c*response.data.ct3).toFixed(3) + 'A';
 
-        response.data.i4a = response.data.i4a + 'A';
-        response.data.i4b = response.data.i4b + 'A';
-        response.data.i4c = response.data.i4c + 'A';
+        response.data.i4a = parseFloat(response.data.i4a*response.data.ct4).toFixed(3) + 'A';
+        response.data.i4b = parseFloat(response.data.i4b*response.data.ct4).toFixed(3) + 'A';
+        response.data.i4c = parseFloat(response.data.i4c*response.data.ct4).toFixed(3) + 'A';
         // 漏电保护
         if(response.data.i_lock){
           response.data.i_lock = '开启'
