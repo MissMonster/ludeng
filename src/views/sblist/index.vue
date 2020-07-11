@@ -36,7 +36,7 @@
             label="操作"
             align="center"
             fixed="right"
-            width="150"
+            width="160"
           >
             <template slot-scope="scope">
               <el-button
@@ -51,6 +51,7 @@
                 icon="el-icon-view"
                 @click="handleck(scope.row)"
               >详情</el-button>
+              <div v-html="scope.row.updated_at"></div>
             </template>
           </el-table-column>
         </el-table>
@@ -67,9 +68,12 @@
 
     <!-- 添加或查看参数配置对话框 -->
     <el-dialog title="当前设备详情：" :visible.sync="open" width="1300px">
-      <el-button @click="ckzc" style="margin-bottom:10px;" type="success">招测</el-button>
+      <!-- <el-button @click="ckzc" style="margin-bottom:10px;" type="success">招测</el-button> -->
       <div class="cktit" style="margin-bottom:10px;">设备基本信息</div>
-      <el-table border :data="ckdate" style="margin-bottom:20px;">
+      <el-table
+        :header-cell-style="{'text-align':'center'}"
+        :cell-style="{'text-align':'center'}"
+        border :data="ckdate" style="margin-bottom:20px;">
         <el-table-column property="terminal_id" label="设备id"></el-table-column>
         <el-table-column property="terminal_name" label="设备名称"></el-table-column>
         <el-table-column property="terminalModel" label="设备型号"></el-table-column>
@@ -85,7 +89,10 @@
       <div style="overflow:hidden;">       
         <div style="width:585px;float:left;margin-right:20px;height:100%;">
             <div class="cktit" style="margin-bottom:10px;">地理位置</div>
-            <el-table border :data="ckdate" style="margin-bottom:20px;">
+            <el-table 
+              :header-cell-style="{'text-align':'center'}"
+              :cell-style="{'text-align':'center'}"
+              border :data="ckdate" style="margin-bottom:20px;">
               <el-table-column width="105" property="gmt_qv" label="时区"></el-table-column>
               <el-table-column property="longit_sign" label="东经/西经"></el-table-column>
               <el-table-column property="longit_val" label="经度"></el-table-column>
@@ -97,7 +104,10 @@
         </div>
         <div style="width:390px;float:left;height:100%;margin-right:20px;">
           <div class="cktit" style="margin-bottom:10px;">设备时间</div>
-          <el-table border :data="ckdate" style="margin-bottom:20px;">
+          <el-table
+              :header-cell-style="{'text-align':'center'}"
+              :cell-style="{'text-align':'center'}"
+              border :data="ckdate" style="margin-bottom:20px;">
             <el-table-column width="50" property="terminal_time1" label="年"></el-table-column>
             <el-table-column width="50" property="terminal_time2" label="月"></el-table-column>
             <el-table-column width="50" property="terminal_time3" label="日"></el-table-column>
@@ -109,7 +119,10 @@
         </div>
         <div style="width:245px;float:left;height:100%;">
           <div class="cktit" style="margin-bottom:10px;">电压参数</div>
-          <el-table border :data="ckdate" style="margin-bottom:20px;">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate" style="margin-bottom:20px;">
             <el-table-column property="ua" label="Ua"></el-table-column>
             <el-table-column property="ub" label="Ub"></el-table-column>
             <el-table-column property="uc" label="Uc"></el-table-column>
@@ -121,7 +134,10 @@
       <div style="overflow:hidden;">
         <div style="width:660px;float:left;margin-right:20px;height:100%;">
           <div class="cktit" style="margin-bottom:10px;">开关灯模式及时间</div>
-          <el-table border :data="ckdate">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate">
             <el-table-column property="one_on_f" label="L1"></el-table-column>
             <el-table-column property="one_manual" label="工作模式"></el-table-column>
             <el-table-column property="one_open_mode" label="开灯模式"></el-table-column>
@@ -131,7 +147,9 @@
             <el-table-column property="one_close_hour" label="关时"></el-table-column>
             <el-table-column property="one_close_minute" label="关分"></el-table-column>
           </el-table>
-          <el-table border :data="ckdate">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}" border :data="ckdate">
             <el-table-column property="two_on_f" label="L2"></el-table-column>
             <el-table-column property="two_manual" label="工作模式"></el-table-column>
             <el-table-column property="two_open_mode" label="开灯模式"></el-table-column>
@@ -141,7 +159,10 @@
             <el-table-column property="two_close_hour" label="关时"></el-table-column>
             <el-table-column property="two_close_minute" label="关分"></el-table-column>
           </el-table>
-          <el-table border :data="ckdate">
+          <el-table 
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate">
             <el-table-column property="three_on_f" label="L3"></el-table-column>
             <el-table-column property="three_manual" label="工作模式"></el-table-column>
             <el-table-column property="three_open_mode" label="开灯模式"></el-table-column>
@@ -151,7 +172,10 @@
             <el-table-column property="three_close_hour" label="关时"></el-table-column>
             <el-table-column property="three_close_minute" label="关分"></el-table-column>
           </el-table>
-          <el-table border :data="ckdate" style="margin-bottom:20px;">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate" style="margin-bottom:20px;">
             <el-table-column property="four_on_f" label="L4"></el-table-column>
             <el-table-column property="four_manual" label="工作模式"></el-table-column>
             <el-table-column property="four_open_mode" label="开灯模式"></el-table-column>
@@ -164,28 +188,40 @@
         </div>
         <div style="width:580px;float:left;height:100%;">
           <div class="cktit" style="margin-bottom:10px;">电参数监测</div>
-          <el-table border :data="ckdate">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate">
             <el-table-column property="inOne" label="IN1"></el-table-column>
             <el-table-column property="ia" label="Ia"></el-table-column>
             <el-table-column property="ib" label="Ib"></el-table-column>
             <el-table-column property="ic" label="Ic"></el-table-column>
             <el-table-column property="ct1" label="CT1"></el-table-column>
           </el-table>
-          <el-table border :data="ckdate">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate">
             <el-table-column property="inTwo" label="IN2"></el-table-column>
             <el-table-column property="i2a" label="I2a"></el-table-column>
             <el-table-column property="i2b" label="I2b"></el-table-column>
             <el-table-column property="i2c" label="I2c"></el-table-column>
             <el-table-column property="ct2" label="CT2"></el-table-column>
           </el-table>
-          <el-table border :data="ckdate">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate">
             <el-table-column property="inThree" label="IN3"></el-table-column>
             <el-table-column property="i3a" label="I3a"></el-table-column>
             <el-table-column property="i3b" label="I3b"></el-table-column>
             <el-table-column property="i3c" label="I3c"></el-table-column>
             <el-table-column property="ct3" label="CT3"></el-table-column>
           </el-table>
-          <el-table border :data="ckdate">
+         <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="ckdate">
             <el-table-column property="inFour" label="IN4"></el-table-column>
             <el-table-column property="i4a" label="I4a"></el-table-column>
             <el-table-column property="i4b" label="I4b"></el-table-column>
@@ -202,7 +238,9 @@
       <div style="overflow:hidden;">
         <div style="width:750px;float:left;margin-right:20px;height:100%;">
           <div class="cktit" style="margin-bottom:10px;">状态监测</div>
-          <el-table border :data="ckdate" style="margin-bottom:20px;">
+          <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}" border :data="ckdate" style="margin-bottom:20px;">
             <el-table-column property="on_line" label="在线/离线"></el-table-column>
             <el-table-column property="gprs_rssi" label="信号强度"></el-table-column>
             <el-table-column property="gprs_ber" label="误码率"></el-table-column>
@@ -217,7 +255,9 @@
         
         <div style="width:490px;float:left;height:100%;">
           <div class="cktit" style="margin-bottom:10px;">漏电保护</div>
-          <el-table border :data="ckdate" style="margin-bottom:20px;">
+          <el-table
+          :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}" border :data="ckdate" style="margin-bottom:20px;">
             <el-table-column property="i_lock" label="脱扣功能"></el-table-column>
             <el-table-column property="is" label="跳闸电流"></el-table-column>
             <el-table-column property="iof" label="漏保开关"></el-table-column>
@@ -330,48 +370,39 @@ export default {
       this.loading = true;
       heartList(this.queryParams).then(response => {
         // console.log(response);
-        // var data = response.data.list;
-        this.sblist = response.data.list;
-        // for(var i=0;i<this.sblist.length;i++){
-        //   if(this.sblist[i].onLine==1){
-        //     this.sblist[i].onLinetxt="在线";
-        //   }else if(this.sblist[i].onLine==2){
-        //     this.sblist[i].onLinetxt="离线";
-        //   }else{
-        //     this.sblist[i].onLinetxt="异常";
-        //   }
-        // }
 
+        this.sblist = response.data.list;
+        console.log(this.sblist);
         this.total = response.data.count;
         this.loading = false;
 
         var ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
-      //连接打开时触发 
-      ws.onopen = function(evt) {  
-          // console.log("Connection open ...");  
-          ws.send("Hello WebSockets!");
-          ws.send("ping");  
-      };  
-      //接收到消息时触发  
-      ws.onmessage = function(evt) { 
-        // var evt={};
-        // evt.data={"gprsRssi":20,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":1,"relay_two_onf":1,"relay_three_onf":1,"relay_four_onf":1,"temperature":"32","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0};
-          // console.log(evt.data)
-          if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
-            var aaa = JSON.parse(evt.data);
-            // console.log(_this.sblist)
-            for(var i=0;i<_this.sblist.length;i++){
-              if(_this.sblist[i].terminalId==aaa.terminalId){
-                
-                _this.$set(_this.sblist[i],Object.assign(_this.sblist[i], aaa))
-              }
-            }      
-          }
-      };
-      //连接关闭时触发  
-      ws.onclose = function(evt) {  
-          // console.log("Connection closed.");  
-      };
+        //连接打开时触发 
+        ws.onopen = function(evt) {  
+            // console.log("Connection open ...");  
+            ws.send("Hello WebSockets!");
+            ws.send("ping");  
+        };  
+        //接收到消息时触发  
+        ws.onmessage = function(evt) { 
+          // var evt={};
+          // evt.data={"gprsRssi":20,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":1,"relay_two_onf":1,"relay_three_onf":1,"relay_four_onf":1,"temperature":"32","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0};
+            console.log(evt.data)
+            if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
+              var aaa = JSON.parse(evt.data);
+              console.log(_this.sblist)
+              for(var i=0;i<_this.sblist.length;i++){
+                if(_this.sblist[i].terminalId==aaa.terminalId){
+                  
+                  _this.$set(_this.sblist[i],Object.assign(_this.sblist[i], aaa))
+                }
+              }      
+            }
+        };
+        //连接关闭时触发  
+        ws.onclose = function(evt) {  
+            // console.log("Connection closed.");  
+        };
 
 
 
