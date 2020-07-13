@@ -18,9 +18,19 @@
               icon="el-icon-edit"
               size="mini"
               :disabled="single"
+              @click="showidlist"
+            >查看</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="success"
+              icon="el-icon-edit"
+              size="mini"
+              :disabled="single"
               @click="handleUpdate"
             >修改</el-button>
           </el-col>
+         
           <el-col :span="1.5">
             <el-button
               type="danger"
@@ -41,8 +51,8 @@
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column width="100" label="策略id" align="center" prop="Id" :show-overflow-tooltip="true" />
           <el-table-column label="策略名称" align="center" prop="name" :show-overflow-tooltip="true" />
-          <el-table-column label="属性" align="center" width="180" prop="attribute" :show-overflow-tooltip="true" />          
-          <el-table-column label="策略描述" align="center" prop="explain" width="240" />
+          <el-table-column label="属性" align="center" :formatter="sx" width="180" prop="attribute" :show-overflow-tooltip="true" />          
+          <el-table-column label="策略描述" align="center" prop="explains" width="240" />
           <el-table-column
             label="使用策略的设备id"
             align="center"
@@ -84,7 +94,13 @@
 
 
     <el-dialog :title="title" :visible.sync="open1" width="600px">
-        
+        <el-table
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            border :data="sbdata">
+            <el-table-column property="one_on_f" label="设备id"></el-table-column>
+            <el-table-column property="one_manual" label="设备名称"></el-table-column>
+          </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel">确 定</el-button>
       </div>
@@ -95,29 +111,30 @@
       <el-form ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="设备名" prop="terminalName">
-              <el-input v-model="form.terminalName" placeholder="请输入设备名" />
+            <el-form-item v-if="showflag" label="策略id" prop="Id">
+              <el-input disabled v-model="form.Id" placeholder="请输入策略id" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="设备地址" prop="terminalAddr">
-              <el-input v-model="form.terminalAddr" placeholder="请输入设备地址"/>
-            </el-form-item>
+          <el-col el-col :span="12">
+              <el-form-item v-if="showflag" label="策略名称" prop="name">
+                <el-input v-model="form.name" placeholder="请输入策略名称" />
+              </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="设备ip" prop="terminalIp">
-              <el-input v-model="form.terminalIp" placeholder="请输入设备ip" />
+            <el-form-item label="属性修改">
+              <el-radio-group v-model="form.attribute">
+                <el-radio
+                  v-for="dict in registerOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictValue"
+                >{{ dict.dictLabel }}</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="经度" prop="terminalLongitude">
-              <el-input v-model="form.terminalLongitude" placeholder="请输入经度" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="纬度" prop="terminalLatitude">
-              <el-input v-model="form.terminalLatitude" placeholder="请输入纬度" />
-            </el-form-item>
+          <el-col el-col :span="12">
+              <el-form-item label="策略描述" prop="explains">
+                <el-input v-model="form.explains" placeholder="请输入策略描述" />
+              </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -133,11 +150,24 @@
 <script>
 
 import { terminalList, terminalInfo , addterminal , editterminal , delterminal} from "@/api/sblist";
-import { strategySetList ,strategySetInfo } from "@/api/clsz";
+import { strategySetList ,strategySetInfo , addStrategySet , editStrategySet , delStrategySet} from "@/api/clsz";
 export default {
   name: 'cllist',
   data() {
     return {
+      showflag:false,
+      // 属性修改
+      registerOptions:[
+        {
+          dictValue:0,
+          dictLabel:'允许'
+        },
+        {
+          dictValue:1,
+          dictLabel:'禁止'
+        }
+      ],
+      sbdata:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -172,6 +202,24 @@ export default {
     this.getList()
   },
   methods: {
+    reset(){
+      this.form  = {
+        Id:undefined,
+        attribute:undefined,
+        explains:undefined,
+        name:undefined
+      }
+    },
+    sx(data){
+      // console.log(data)
+      if(data.attribute == 0){
+        return '允许';
+      }else if(data.attribute == 1){
+        return '禁止'
+      }else{
+        return '默认属性'
+      }
+    },
     /** 查询用户列表 */
     getList() {
       this.loading = true;
@@ -196,27 +244,29 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+        this.reset();
         this.open = true;
-        this.title = '添加设备';
+        this.showflag = false;
+        this.title = '添加策略';
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       const sbid = row.Id || this.ids;
-      terminalInfo(sbid).then(response => {
+      this.showflag = true;
+      strategySetInfo(sbid).then(response => {
         console.log(response)
         this.form = response.data
         this.open = true
-        this.title = '修改设备信息'
+        this.title = '修改策略信息'
       })
     },
     /** 提交按钮 */
     submitForm: function() {
-            console.log(this.form.Id)
+            // console.log(this.form.Id)
       this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.form.Id !== undefined) {
-            console.log(this.form)
-            editterminal(this.form).then(response => {
+            editStrategySet(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('修改成功')
                 this.open = false
@@ -226,7 +276,7 @@ export default {
               }
             })
           } else {
-            addterminal(this.form).then(response => {
+            addStrategySet(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('新增成功')
                 this.open = false
@@ -250,7 +300,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return delterminal(id)
+        return delStrategySet(id)
       }).then(() => {
         this.getList()
         this.msgSuccess('删除成功')
@@ -261,8 +311,11 @@ export default {
         var id = row.Id || this.ids;
         id = [].concat(id) 
         console.log(id)
+        this.open1 = true;
+        this.title = '该策略下所有设备信息';
         strategySetInfo(id).then(response => {
             console.log(response)
+            this.sbdata = response.data.TerminalInfo;
             // this.form = response.data
             // this.open = true
             // this.title = '修改设备信息'

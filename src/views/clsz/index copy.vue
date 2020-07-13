@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--区域数据-->
+      <!--策略数据-->
       <el-col :span="24" :xs="24">
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
@@ -21,7 +21,6 @@
               @click="handleUpdate"
             >修改</el-button>
           </el-col>
-         
           <el-col :span="1.5">
             <el-button
               type="danger"
@@ -40,21 +39,23 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="区域id" align="center" prop="Id" :show-overflow-tooltip="true" />
-          <el-table-column label="区域名称" align="center" prop="name" :show-overflow-tooltip="true" />
-          <el-table-column label="国家" align="center" prop="country" :show-overflow-tooltip="true" />
-          <el-table-column label="省" align="center" prop="province" :show-overflow-tooltip="true" />          
-          <el-table-column label="市" align="center" prop="city" :show-overflow-tooltip="true"/>
-          <el-table-column label="区" align="center" prop="area" :show-overflow-tooltip="true"/>
-          <el-table-column label="镇" align="center" prop="town" :show-overflow-tooltip="true"/>
-          <el-table-column label="村" align="center" prop="village" :show-overflow-tooltip="true" />
+          <el-table-column width="100" label="策略id" align="center" prop="Id" :show-overflow-tooltip="true" />
+          <el-table-column label="策略名称" align="center" prop="name" :show-overflow-tooltip="true" />
+          <el-table-column label="属性" align="center" width="180" prop="attribute" :show-overflow-tooltip="true" />          
+          <el-table-column label="策略描述" align="center" prop="explains" width="240" />
           <el-table-column
-            label="操作"
+            label="使用策略的设备id"
             align="center"
-            width="200"
+            width="420"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
+            <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-edit"
+                @click="showidlist(scope.row)"
+              >查看</el-button>
               <el-button
                 size="mini"
                 type="text"
@@ -81,23 +82,25 @@
       </el-col>
     </el-row>
 
-    <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="区域id" prop="Id">
-              <el-input disabled v-model="form.Id" placeholder="请输入区域id" />
-            </el-form-item>
-          </el-col>
-          <el-col el-col :span="12">
-              <el-form-item label="区域名称" prop="name">
-                <el-input v-model="form.name" placeholder="请输入区域名称" />
+
+    <el-dialog :title="title" :visible.sync="open1" width="600px">
+        
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="cancel">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="title" :visible.sync="open2" width="600px">
+        <el-form ref="form1" :model="form1" label-width="80px">
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="策略说明" prop="explains">
+                <el-input v-model="form1.explains" placeholder="请输入策略说明" />
               </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="属性修改">
-              <el-radio-group v-model="form.attribute">
+            </el-col>
+            <el-col :span="12">
+            <el-form-item label="是否注册">
+              <el-radio-group v-model="form1.registered">
                 <el-radio
                   v-for="dict in registerOptions"
                   :key="dict.dictValue"
@@ -106,10 +109,42 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col el-col :span="12">
-              <el-form-item label="区域描述" prop="explains">
-                <el-input v-model="form.explains" placeholder="请输入区域描述" />
-              </el-form-item>
+          </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 添加或修改参数配置对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="600px">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="设备名" prop="terminalName">
+              <el-input v-model="form.terminalName" placeholder="请输入设备名" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="设备地址" prop="terminalAddr">
+              <el-input v-model="form.terminalAddr" placeholder="请输入设备地址"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="设备ip" prop="terminalIp">
+              <el-input v-model="form.terminalIp" placeholder="请输入设备ip" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="经度" prop="terminalLongitude">
+              <el-input v-model="form.terminalLongitude" placeholder="请输入经度" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="纬度" prop="terminalLatitude">
+              <el-input v-model="form.terminalLatitude" placeholder="请输入纬度" />
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -124,23 +159,12 @@
 
 <script>
 
-import { gmtLogInfo , areaSetList ,addAreaSet , editAreaSet , delAreaSet} from "@/api/qysz";
+import { terminalList, terminalInfo , addterminal , editterminal , delterminal} from "@/api/sblist";
+import { strategySetList ,strategySetInfo } from "@/api/clsz";
 export default {
   name: 'cllist',
   data() {
     return {
-      // 属性修改
-      registerOptions:[
-        {
-          dictValue:0,
-          dictLabel:'允许'
-        },
-        {
-          dictValue:1,
-          dictLabel:'禁止'
-        }
-      ],
-      sbdata:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -157,7 +181,20 @@ export default {
       title: '',
       // 是否显示弹出层*******
       open: false,
+      open1:false,
+      open2:false,
       // 表单参数
+      form1:{},
+      registerOptions:[
+        {
+          dictValue:1,
+          dictLabel:'注册'
+        },
+        {
+          dictValue:2,
+          dictLabel:'未注册'
+        }
+      ],
       form: {},
       // 查询参数
       queryParams: {
@@ -174,18 +211,10 @@ export default {
     this.getList()
   },
   methods: {
-    reset(){
-      this.form  = {
-        Id:undefined,
-        attribute:undefined,
-        explains:undefined,
-        name:undefined
-      }
-    },
-    /** 查询区域列表 */
+    /** 查询策略列表 */
     getList() {
       this.loading = true;
-      areaSetList(this.queryParams).then(response => {
+      strategySetList().then(response => {
         console.log(response);
         // var data = response.data.list;
         this.cllist = response.data.list
@@ -196,6 +225,8 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
+      this.open1 = false
+      this.open2 = false
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -205,28 +236,27 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-        this.reset();
-        this.open = true;
-        this.title = '添加区域';
+        this.open2 = true;
+        this.title = '添加策略';
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       const sbid = row.Id || this.ids;
-      console.log(sbid)
-      gmtLogInfo(sbid).then(response => {
+      terminalInfo(sbid).then(response => {
         console.log(response)
         this.form = response.data
         this.open = true
-        this.title = '修改区域信息'
+        this.title = '修改设备信息'
       })
     },
     /** 提交按钮 */
     submitForm: function() {
-            // console.log(this.form.Id)
+            console.log(this.form.Id)
       this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.form.Id !== undefined) {
-            editStrategySet(this.form).then(response => {
+            console.log(this.form)
+            editterminal(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('修改成功')
                 this.open = false
@@ -236,7 +266,7 @@ export default {
               }
             })
           } else {
-            addStrategySet(this.form).then(response => {
+            addterminal(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('新增成功')
                 this.open = false
@@ -260,11 +290,23 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return delAreaSet(id)
+        return delterminal(id)
       }).then(() => {
         this.getList()
         this.msgSuccess('删除成功')
       }).catch(function() {})
+    },
+    // 查看该策略下所有设备
+    showidlist(row){
+        var id = row.Id || this.ids;
+        id = [].concat(id) 
+        console.log(id)
+        strategySetInfo(id).then(response => {
+            console.log(response)
+            // this.form = response.data
+            // this.open = true
+            // this.title = '修改设备信息'
+        })
     }
   }
 }
