@@ -10,9 +10,9 @@ export function areaSetList(query) {
 }
 
 // 查看区域详情
-export function gmtLogInfo(id) {
+export function areaSetInfo(id) {
   return request({
-      url: '/api/v1/gmtLogInfo?id=' + id,
+      url: '/api/v1/areaSetInfo?id=' + id,
       method: 'get'
   })
 }

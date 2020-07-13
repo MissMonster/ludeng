@@ -10,9 +10,9 @@ export function strategySetList(query) {
 }
 
 // 查询策略详细
-export function strategySetInfo(id) {
+export function strategySetInfo(id,attribute) {
     return request({
-      url: '/api/v1/strategySetInfo?id=' + id,
+      url: '/api/v1/strategySetInfo?id=' + id + '&attribute=' + attribute,
       method: 'get'
     })
 }

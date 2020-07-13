@@ -14,25 +14,6 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              type="success"
-              icon="el-icon-edit"
-              size="mini"
-              :disabled="single"
-              @click="showidlist"
-            >查看</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              icon="el-icon-edit"
-              size="mini"
-              :disabled="single"
-              @click="handleUpdate"
-            >修改</el-button>
-          </el-col>
-         
-          <el-col :span="1.5">
-            <el-button
               type="danger"
               icon="el-icon-delete"
               size="mini"
@@ -93,13 +74,23 @@
     </el-row>
 
 
-    <el-dialog :title="title" :visible.sync="open1" width="600px">
+    <el-dialog :title="title" :visible.sync="open1" width="1200px">
         <el-table
             :header-cell-style="{'text-align':'center'}"
             :cell-style="{'text-align':'center'}"
             border :data="sbdata">
-            <el-table-column property="one_on_f" label="设备id"></el-table-column>
-            <el-table-column property="one_manual" label="设备名称"></el-table-column>
+            <el-table-column label="终端id" align="center" prop="Id" :show-overflow-tooltip="true" />
+            <el-table-column label="终端名称" align="center" prop="terminalName" :show-overflow-tooltip="true" />
+            <el-table-column label="终端安装地理位置" align="center" width="180" prop="terminalAddr" :show-overflow-tooltip="true" />
+            <el-table-column label="是否注册" align="center" :show-overflow-tooltip="true" >
+              <template slot-scope="scope">
+                <span v-if="scope.row.registered == 1">注册</span> 
+                <span v-else>未注册</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="终端IP地址" align="center" prop="terminalIp" width="240" />
+            <el-table-column label="经度" align="center" prop="terminalLongitude" :show-overflow-tooltip="true" />
+            <el-table-column label="纬度" align="center" prop="terminalLatitude" :show-overflow-tooltip="true" />
           </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel">确 定</el-button>
@@ -253,7 +244,8 @@ export default {
     handleUpdate(row) {
       const sbid = row.Id || this.ids;
       this.showflag = true;
-      strategySetInfo(sbid).then(response => {
+      var attribute = row.attribute;
+      strategySetInfo(sbid,attribute).then(response => {
         console.log(response)
         this.form = response.data
         this.open = true
@@ -310,10 +302,12 @@ export default {
     showidlist(row){
         var id = row.Id || this.ids;
         id = [].concat(id) 
+        var attribute = row.attribute;
         console.log(id)
+        console.log(attribute)
         this.open1 = true;
         this.title = '该策略下所有设备信息';
-        strategySetInfo(id).then(response => {
+        strategySetInfo(id,attribute).then(response => {
             console.log(response)
             this.sbdata = response.data.TerminalInfo;
             // this.form = response.data
