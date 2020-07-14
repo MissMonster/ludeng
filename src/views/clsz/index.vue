@@ -111,7 +111,7 @@
                 <el-input v-model="form.name" placeholder="请输入策略名称" />
               </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="属性修改">
               <el-radio-group v-model="form.attribute">
                 <el-radio
@@ -121,7 +121,7 @@
                 >{{ dict.dictLabel }}</el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col el-col :span="12">
               <el-form-item label="策略描述" prop="explains">
                 <el-input v-model="form.explains" placeholder="请输入策略描述" />
@@ -151,11 +151,11 @@ export default {
       registerOptions:[
         {
           dictValue:0,
-          dictLabel:'允许'
+          dictLabel:'可编辑'
         },
         {
           dictValue:1,
-          dictLabel:'禁止'
+          dictLabel:'不可编辑'
         }
       ],
       sbdata:[],
@@ -204,11 +204,11 @@ export default {
     sx(data){
       // console.log(data)
       if(data.attribute == 0){
-        return '允许';
+        return '可编辑';
       }else if(data.attribute == 1){
-        return '禁止'
+        return '不可编辑'
       }else{
-        return '默认属性'
+        return '不可编辑'
       }
     },
     /** 查询用户列表 */
@@ -245,6 +245,14 @@ export default {
       const sbid = row.Id || this.ids;
       this.showflag = true;
       var attribute = row.attribute;
+      if(row.Id==1){
+        this.$message({
+          message: '不允许修改',
+          type: 'warning'
+        })
+        return;
+      }
+      // console.log(row)
       strategySetInfo(sbid,attribute).then(response => {
         console.log(response)
         this.form = response.data
@@ -287,6 +295,13 @@ export default {
       id = [].concat(id) 
       // console.log(id)
       // return
+      if(row.Id==1){
+        this.$message({
+          message: '不允许删除',
+          type: 'error'
+        })
+        return;
+      }
       this.$confirm('是否确认删除id为"' + id + '"的数据项?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -303,8 +318,8 @@ export default {
         var id = row.Id || this.ids;
         id = [].concat(id) 
         var attribute = row.attribute;
-        console.log(id)
-        console.log(attribute)
+        // console.log(id)
+        // console.log(attribute)
         this.open1 = true;
         this.title = '该策略下所有设备信息';
         strategySetInfo(id,attribute).then(response => {

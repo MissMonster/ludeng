@@ -85,68 +85,68 @@
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="国家：" prop="name">
-              <el-select v-model="value" filterable placeholder="请选择">
+            <el-form-item label="国家：" prop="country">
+              <el-select @change="c(1)" v-model="form.country" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in optionguo"
+                  :key="item.country"
+                  :label="item.name"
+                  :value="item.country">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="省：" prop="name">
-              <el-select v-model="value" filterable placeholder="请选择">
+            <el-form-item  label="省：" prop="province">
+              <el-select @focus="getsheng" @change="c(2)" v-model="form.province" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in optionsheng"
+                  :key="item.province"
+                  :label="item.name"
+                  :value="item.province">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="市：" prop="name">
-              <el-select v-model="value" filterable placeholder="请选择">
+              <el-select @focus="getshi" @change="c(3)" v-model="form.city" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in optionshi"
+                  :key="item.city"
+                  :label="item.name"
+                  :value="item.city">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="区：" prop="name">
-              <el-select v-model="value" filterable placeholder="请选择">
+              <el-select @focus="getqv" @change="c(4)" v-model="form.area" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in optionqv"
+                  :key="item.area"
+                  :label="item.name"
+                  :value="item.area">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="镇：" prop="name">
-              <el-select v-model="value" filterable placeholder="请选择">
+              <el-select @focus="getzhen" v-model="form.town" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in optionzhen"
+                  :key="item.town"
+                  :label="item.name"
+                  :value="item.town">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="详细地址：" prop="name">
-              <el-input v-model="form.terminalName" placeholder="请输入地址" />
+              <el-input v-model="form.name" placeholder="请输入地址" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -162,7 +162,9 @@
 
 <script>
 
-import { areaSetInfo , areaSetList ,addAreaSet , editAreaSet , delAreaSet} from "@/api/qysz";
+import { areaSetInfo , areaSetList ,addAreaSet , editAreaSet , delAreaSet ,
+queryCountry , queryProvince , queryCity , queryCounty , queryTown
+} from "@/api/qysz";
 export default {
   name: 'cllist',
   data() {
@@ -178,6 +180,11 @@ export default {
           dictLabel:'禁止'
         }
       ],
+      optionguo:[],
+      optionsheng:[],
+      optionshi:[],
+      optionqv:[],
+      optionzhen:[],
       options: [{
           value: '选项1',
           label: '黄金糕'
@@ -213,7 +220,16 @@ export default {
       // 是否显示弹出层*******
       open: false,
       // 表单参数
-      form: {},
+      form: {
+        Id:undefined,
+        code:undefined,
+        name:undefined,
+        country:11,
+        province:undefined,
+        city:undefined,
+        area:undefined,
+        town:undefined
+      },
       // 查询参数
       queryParams: {
         pageIndex: 1,
@@ -227,21 +243,71 @@ export default {
   },
   created() {
     this.getList()
+    // this.reset();
   },
   methods: {
+    c(val){
+      if(val==1){
+        this.form.province = undefined;
+        this.form.city = undefined;
+        this.form.area = undefined;
+        this.form.town = undefined;
+      }else if(val==2){
+        this.form.city = undefined;
+        this.form.area = undefined;
+        this.form.town = undefined;
+      }else if(val==3){
+        this.form.area = undefined;
+        this.form.town = undefined;       
+      }else if(val==4){
+        this.form.town = undefined;       
+      }
+    },
     reset(){
       this.form  = {
-        Id:undefined,
-        attribute:undefined,
-        explains:undefined,
-        name:undefined
+        id:undefined,
+        code:undefined,
+        name:undefined,
+        country:undefined,
+        province:undefined,
+        city:undefined,
+        area:undefined,
+        town:undefined
       }
+    },
+    getsheng(){
+      console.log(this.form)
+      queryProvince(this.form).then(response =>{
+        console.log(response)
+        this.optionsheng = response.data;
+      })
+    },
+    getshi(){
+      console.log(this.form)
+      queryCity(this.form).then(response =>{
+        console.log(response)
+        this.optionshi = response.data;
+      })
+    },
+    getqv(){
+      console.log(this.form)
+      queryCounty(this.form).then(response =>{
+        console.log(response)
+        this.optionqv = response.data;
+      })
+    },
+    getzhen(){
+      console.log(this.form)
+      queryTown(this.form).then(response =>{
+        console.log(response)
+        this.optionzhen = response.data;
+      })
     },
     /** 查询区域列表 */
     getList() {
       this.loading = true;
       areaSetList(this.queryParams).then(response => {
-        console.log(response);
+        // console.log(response);
         // var data = response.data.list;
         this.cllist = response.data.list
         this.total = response.data.count
@@ -263,11 +329,18 @@ export default {
         this.reset();
         this.open = true;
         this.title = '添加区域';
+        queryCountry().then(response => {
+          console.log(response);
+          this.optionguo = response.data;
+        });
+
+
+
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       const sbid = row.Id || this.ids;
-      console.log(sbid)
+      // console.log(sbid)
       areaSetInfo(sbid).then(response => {
         console.log(response)
         this.form = response.data
@@ -280,8 +353,9 @@ export default {
             // console.log(this.form.Id)
       this.$refs['form'].validate(valid => {
         if (valid) {
-          if (this.form.Id !== undefined) {
-            editStrategySet(this.form).then(response => {
+          if (this.form.id !== undefined) {
+            
+            editAreaSet(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('修改成功')
                 this.open = false
@@ -291,7 +365,9 @@ export default {
               }
             })
           } else {
-            addStrategySet(this.form).then(response => {
+            // console.log(this.form)
+            // return
+            addAreaSet(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess('新增成功')
                 this.open = false
