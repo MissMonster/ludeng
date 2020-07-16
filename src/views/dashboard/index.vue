@@ -197,92 +197,144 @@ export default {
           });
           tempclick(temp);
       })
-      var ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
-      //连接打开时触发 
-      ws.onopen = function(evt) {  
-          console.log("Connection open ...");  
+
+
+      var ws;
+      function ws_connect(func) {
+        ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
+        //连接打开时触发 
+        ws.onopen = function(evt) {  
+            // console.log("Connection open ...");  
+            ws_heart();
+            if (typeof func == 'function') {
+                func();
+            } 
+        };  
+        //接收到消息时触发  
+        ws.onmessage = function(evt) { 
+          // var evt={};
+          // evt.data='{"gprsRssi":22,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":0,"relay_two_onf":0,"relay_three_onf":0,"relay_four_onf":0,"temperature":"30","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0}';
+            console.log(evt.data)
+            if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
+              var res = JSON.parse(evt.data);
+              var id = res.terminalId;
+              var gprsRssi = res.gprsRssi;
+              // console.log(markers)
+              // console.log(id)
+              // console.log(gprsRssi)//信号
+              var infoWindow = new AMap.InfoWindow({offset: 0});
+              markers.forEach(function(marker) {              
+                  if(marker.id==id){   
+                    var img1 = '',img2='';
+                    if(gprsRssi==0){
+                      img1 = _this.imgUrl.no;
+                      img2 = _this.imgUrl["sign"+gprsRssi];
+                    }else{
+                      img1 = _this.imgUrl.has;//
+                      img2 = _this.imgUrl["sign"+gprsRssi];
+                    }
+
+                    let Icon1 = new AMap.Icon({
+                        // 图标尺寸
+                        size: new AMap.Size(20, 20),
+                        // 图标的取图地址
+                        image: img1,
+                        // 图标所用图片大小
+                        imageSize: new AMap.Size(20, 20),
+                        // 图标取图偏移量
+                        imageOffset: new AMap.Pixel(0, 0)
+                    });
+                    let Icon2 = new AMap.Icon({
+                        // 图标尺寸
+                        size: new AMap.Size(20, 20),
+                        // 图标的取图地址
+                        image: img2,
+                        // 图标所用图片大小
+                        imageSize: new AMap.Size(20, 20),
+                        // 图标取图偏移量
+                        imageOffset: new AMap.Pixel(0, 0)
+                    });
+
+                    var name1 = "marker"+id+'a';
+                    var name2 = "marker"+id+'b';
+
+                    if (window[name1]) {
+                        window[name1].setMap(null);
+                        window[name1] = null;
+                        window[name2].setMap(null);
+                        window[name2] = null;
+                    }
+                    setTimeout(function(){
+                      window[name1] = new AMap.Marker({
+                          icon: Icon1,
+                          position: [marker.position[0], marker.position[1]],
+                          offset: new AMap.Pixel(-8, -25)
+                      });
+                      window[name2] = new AMap.Marker({
+                          icon: Icon2,
+                          position: [marker.position[0], marker.position[1]],
+                          offset: new AMap.Pixel(13, -25)
+                      });
+                      window[name1].setMap(map);
+                      window[name2].setMap(map);
+                    },500)
+                  }
+              })
+              // map.setFitView();
+            }
+        };  
+        //连接关闭时触发  
+        ws.onclose = function(evt) {  
+            console.log("Connection closed.");  
+        }; 
+      }
+      var func = function () {
           ws.send("Hello WebSockets!");
           ws.send("ping");  
-      };  
-      //接收到消息时触发  
-      ws.onmessage = function(evt) { 
-        // var evt={};
-        // evt.data='{"gprsRssi":22,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":0,"relay_two_onf":0,"relay_three_onf":0,"relay_four_onf":0,"temperature":"30","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0}';
-          console.log(evt.data)
-          if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
-            var res = JSON.parse(evt.data);
-            var id = res.terminalId;
-            var gprsRssi = res.gprsRssi;
-            console.log(markers)
-            console.log(id)
-            console.log(gprsRssi)//信号
-            var infoWindow = new AMap.InfoWindow({offset: 0});
-            markers.forEach(function(marker) {              
-                if(marker.id==id){   
-                  var img1 = '',img2='';
-                  if(gprsRssi==0){
-                    img1 = _this.imgUrl.no;
-                    img2 = _this.imgUrl["sign"+gprsRssi];
-                  }else{
-                    img1 = _this.imgUrl.has;//
-                    img2 = _this.imgUrl["sign"+gprsRssi];
+      };
+      ws_connect(func);
+      function ws_execute(func) {
+          console.log('ws_execute:readyState:' + ws.readyState);
+          if (ws.readyState == 0) {
+              // 正在链接中
+              var _old$open = ws.onopen;
+              ws.onopen = function (e) {
+                // 原本 onopen 里的代码先执行完毕
+                  _old$open.apply(this, arguments);
+                  if (typeof func == 'function') {
+                      func();
                   }
-
-                  let Icon1 = new AMap.Icon({
-                      // 图标尺寸
-                      size: new AMap.Size(20, 20),
-                      // 图标的取图地址
-                      image: img1,
-                      // 图标所用图片大小
-                      imageSize: new AMap.Size(20, 20),
-                      // 图标取图偏移量
-                      imageOffset: new AMap.Pixel(0, 0)
-                  });
-                  let Icon2 = new AMap.Icon({
-                      // 图标尺寸
-                      size: new AMap.Size(20, 20),
-                      // 图标的取图地址
-                      image: img2,
-                      // 图标所用图片大小
-                      imageSize: new AMap.Size(20, 20),
-                      // 图标取图偏移量
-                      imageOffset: new AMap.Pixel(0, 0)
-                  });
-
-                  var name1 = "marker"+id+'a';
-                  var name2 = "marker"+id+'b';
-
-                  if (window[name1]) {
-                      window[name1].setMap(null);
-                      window[name1] = null;
-                      window[name2].setMap(null);
-                      window[name2] = null;
-                  }
-                  setTimeout(function(){
-                    window[name1] = new AMap.Marker({
-                        icon: Icon1,
-                        position: [marker.position[0], marker.position[1]],
-                        offset: new AMap.Pixel(-8, -25)
-                    });
-                    window[name2] = new AMap.Marker({
-                        icon: Icon2,
-                        position: [marker.position[0], marker.position[1]],
-                        offset: new AMap.Pixel(13, -25)
-                    });
-                    window[name1].setMap(map);
-                    window[name2].setMap(map);
-                  },500)
-                }
-            })
-            // map.setFitView();
+              };
+          } else if (ws.readyState == 1) {
+              // 已经链接并且可以通讯
+              if (typeof func == 'function') {
+                  func();
+              }
+          } else if (ws.readyState == 2) {
+              // 连接正在关闭
+              var _old$close = ws.onclose;
+              ws.onclose = function (e) {
+                // 原本 onclose 里的代码先执行完毕
+                  _old$close.apply(this, arguments);
+                  ws_connect(func);
+              };
+          } else if (ws.readyState == 3) {
+              // 连接已关闭或者没有链接成功
+              ws_connect(func);
           }
-      };  
-      //连接关闭时触发  
-      ws.onclose = function(evt) {  
-          console.log("Connection closed.");  
-      }; 
-
-
+      }
+      var ws_heart_i = null;
+      function ws_heart() {
+        if (ws_heart_i) clearInterval(ws_heart_i);
+        ws_heart_i = setInterval(function () {
+            console.log('ws_heart');
+            var func = function () {
+                ws.send("Hello WebSockets!");
+                ws.send("ping"); 
+            };
+            ws_execute(func);
+        }, 30000);
+      }
     })
 
 

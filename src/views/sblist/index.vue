@@ -372,38 +372,89 @@ export default {
         // console.log(response);
 
         this.sblist = response.data.list;
-        console.log(this.sblist);
+        // console.log(this.sblist);
         this.total = response.data.count;
         this.loading = false;
 
-        var ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
-        //连接打开时触发 
-        ws.onopen = function(evt) {  
-            // console.log("Connection open ...");  
+        var ws;
+        function ws_connect(func) {
+          ws = new WebSocket("ws://hoyware.com/api/v1/ws");  
+          //连接打开时触发 
+          ws.onopen = function(evt) {  
+              // console.log("Connection open ...");  
+              ws_heart();
+              if (typeof func == 'function') {
+                  func();
+              } 
+          };  
+          //接收到消息时触发  
+          ws.onmessage = function(evt) { 
+            // var evt={};
+            // evt.data={"gprsRssi":20,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":1,"relay_two_onf":1,"relay_three_onf":1,"relay_four_onf":1,"temperature":"32","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0};
+              console.log(evt.data)
+              if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
+                var aaa = JSON.parse(evt.data);
+                // console.log(_this.sblist)
+                for(var i=0;i<_this.sblist.length;i++){
+                  if(_this.sblist[i].terminalId==aaa.terminalId){
+                    
+                    _this.$set(_this.sblist[i],Object.assign(_this.sblist[i], aaa))
+                  }
+                }      
+              }
+          };
+          //连接关闭时触发  
+          ws.onclose = function(evt) {  
+              console.log("Connection closed.");  
+          };
+        }
+        var func = function () {
             ws.send("Hello WebSockets!");
             ws.send("ping");  
-        };  
-        //接收到消息时触发  
-        ws.onmessage = function(evt) { 
-          // var evt={};
-          // evt.data={"gprsRssi":20,"gprsBer":99,"alarm":0,"terminalId":28,"onLine":1,"rol":0,"ua":0,"ub":0,"uc":0,"relay_one_onf":1,"relay_two_onf":1,"relay_three_onf":1,"relay_four_onf":1,"temperature":"32","inOne":1,"inTwo":1,"inThree":1,"inFour":1,"inFive":0,"inSix":0,"inSeven":0,"door":1,"acIn":0,"il":0};
-            console.log(evt.data)
-            if(evt.data!='Hello WebSockets!'&&evt.data!='ping'){
-              var aaa = JSON.parse(evt.data);
-              console.log(_this.sblist)
-              for(var i=0;i<_this.sblist.length;i++){
-                if(_this.sblist[i].terminalId==aaa.terminalId){
-                  
-                  _this.$set(_this.sblist[i],Object.assign(_this.sblist[i], aaa))
+        };
+        ws_connect(func);
+        function ws_execute(func) {
+            console.log('ws_execute:readyState:' + ws.readyState);
+            if (ws.readyState == 0) {
+                // 正在链接中
+                var _old$open = ws.onopen;
+                ws.onopen = function (e) {
+                  // 原本 onopen 里的代码先执行完毕
+                    _old$open.apply(this, arguments);
+                    if (typeof func == 'function') {
+                        func();
+                    }
+                };
+            } else if (ws.readyState == 1) {
+                // 已经链接并且可以通讯
+                if (typeof func == 'function') {
+                    func();
                 }
-              }      
+            } else if (ws.readyState == 2) {
+                // 连接正在关闭
+                var _old$close = ws.onclose;
+                ws.onclose = function (e) {
+                  // 原本 onclose 里的代码先执行完毕
+                    _old$close.apply(this, arguments);
+                    ws_connect(func);
+                };
+            } else if (ws.readyState == 3) {
+                // 连接已关闭或者没有链接成功
+                ws_connect(func);
             }
-        };
-        //连接关闭时触发  
-        ws.onclose = function(evt) {  
-            // console.log("Connection closed.");  
-        };
-
+        }
+        var ws_heart_i = null;
+        function ws_heart() {
+          if (ws_heart_i) clearInterval(ws_heart_i);
+          ws_heart_i = setInterval(function () {
+              console.log('ws_heart');
+              var func = function () {
+                  ws.send("Hello WebSockets!");
+                  ws.send("ping"); 
+              };
+              ws_execute(func);
+          }, 30000);
+      }
 
 
       });
