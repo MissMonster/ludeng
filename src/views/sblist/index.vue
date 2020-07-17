@@ -68,7 +68,7 @@
 
     <!-- 添加或查看参数配置对话框 -->
     <el-dialog title="当前设备详情：" :visible.sync="open" width="1300px">
-      <!-- <el-button @click="ckzc" style="margin-bottom:10px;" type="success">招测</el-button> -->
+      <el-button @click="shuaxin" style="margin-bottom:10px;" type="success">刷新</el-button>
       <div class="cktit" style="margin-bottom:10px;">设备基本信息</div>
       <el-table
         :header-cell-style="{'text-align':'center'}"
@@ -281,6 +281,8 @@ export default {
   components: { Treeselect },
   data() {
     return {
+      //刷新id
+      sxid:undefined,
       // 是否注册
       registerOptions:[
         {
@@ -363,6 +365,9 @@ export default {
     },
     toDouble(i){
       return i=i<10?'0'+i:i;
+    },
+    shuaxin(){
+      this.heartInfofn(this.sxid);
     },
     /** 查询用户列表 */
     getList() {
@@ -471,10 +476,8 @@ export default {
         terminalLatitude: undefined,
       }
     },
-    /** 查看按钮操作 */
-    handleck(row) {
-      this.open = true;
-      var id = row.id;
+    heartInfofn(id){
+      console.log(id)
       this.ckdate = [];
       // console.log(id)
       heartInfo(id).then(response => {
@@ -698,6 +701,12 @@ export default {
         this.print(response.data)
 
       })
+    },
+    /** 查看按钮操作 */
+    handleck(row) {
+      this.open = true;
+      this.sxid = row.id;
+      this.heartInfofn(this.sxid);
     },
     /** 点击招测操作 */
     ckzc(){
