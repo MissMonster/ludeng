@@ -477,7 +477,7 @@ export default {
       }
     },
     heartInfofn(id){
-      console.log(id)
+      // console.log(id)
       this.ckdate = [];
       // console.log(id)
       heartInfo(id).then(response => {
@@ -641,7 +641,7 @@ export default {
 
 
         // 状态监测
-        if(response.data.on_line){
+        if(response.data.on_line==1){
           response.data.on_line = '在线'
         }else{
           response.data.on_line = '离线'
@@ -697,9 +697,29 @@ export default {
           response.data.iof = '断开'
         }
         response.data.il = response.data.il + 'mA';
+
+        // <el-table-column property="terminal_id" label="设备id"></el-table-column>
+        // <el-table-column property="terminal_name" label="设备名称"></el-table-column>
+        // <el-table-column property="terminalModel" label="设备型号"></el-table-column>
+        // <el-table-column property="terminalSn" label="设备序列号"></el-table-column>
+        // <el-table-column property="terminalPhone" label="设备手机号"></el-table-column>
+        // <el-table-column property="area_city" label="所在区域"></el-table-column>
+        // <el-table-column property="terminal_addr" label="安装地点"></el-table-column>
+        // <el-table-column property="terminalLongitude" label="安装地经度"></el-table-column>
+        // <el-table-column property="terminalLatitude" label="安装地纬度"></el-table-column>
+        // <el-table-column property="terminalIp" label="设备IP及PORT"></el-table-column>
+
+
+        
+        if(response.data.on_line=='离线'){
+          for(var i in response.data){
+            if(i!='on_line'&&i!='terminal_id'&&i!='terminal_name'&&i!='terminalModel'&&i!='terminalSn'&&i!='terminalPhone'&&i!='area_city'&&i!='terminal_addr'&&i!='terminalLongitude'&&i!='terminalLatitude'&&i!='ct1'&&i!='ct2'&&i!='ct3'&&i!='ct4'){
+              response.data[i] = '-';
+            }
+          }
+        }
         this.ckdate.push(response.data);
         this.print(response.data)
-
       })
     },
     /** 查看按钮操作 */

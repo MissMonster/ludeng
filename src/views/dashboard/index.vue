@@ -187,15 +187,21 @@ export default {
         }
         markers.push(marker);
       }
+      console.log(markers)
       markers.forEach(function(marker) {
-	        let temp = new AMap.Marker({
+        var temp = "marker"+marker.id;
+        if (window[temp]) {
+            window[temp].setMap(null);
+        }
+        console.log(window[temp])
+	      window[temp]= new AMap.Marker({
 	            map: map,
 	            icon: marker.icon,
 	            position: [marker.position[0], marker.position[1]],
               offset: new AMap.Pixel(0, 0),
               id:marker.id
           });
-          tempclick(temp);
+          tempclick(window[temp]);
       })
 
 
@@ -223,7 +229,8 @@ export default {
               // console.log(id)
               // console.log(gprsRssi)//信号
               var infoWindow = new AMap.InfoWindow({offset: 0});
-              markers.forEach(function(marker) {              
+              markers.forEach(function(marker) { 
+                console.log(marker)             
                   if(marker.id==id){   
                     var img1 = '',img2='';
                     if(gprsRssi==0){
@@ -254,27 +261,60 @@ export default {
                         // 图标取图偏移量
                         imageOffset: new AMap.Pixel(0, 0)
                     });
-
+                    
                     var name1 = "marker"+id+'a';
                     var name2 = "marker"+id+'b';
-
+                    var temp = "marker"+id;
                     if (window[name1]) {
                         window[name1].setMap(null);
                         window[name1] = null;
                         window[name2].setMap(null);
                         window[name2] = null;
+
+                        window[temp].setMap(null);
+                        window[temp] = null;
                     }
+                    let img = '';
+                    console.log(res.onLine)
+                    if(res.onLine=='在线'){
+                      img = _this.pointsuc;
+                    }else if(res.onLine=='离线'){
+                      img = _this.pointerr;
+                    }else{
+                      img = _this.pointwarn;
+                    }
+                    // 创建一个 Icon
+                    let Icon = new AMap.Icon({
+                        // 图标尺寸
+                        size: new AMap.Size(30, 30),
+                        // 图标的取图地址
+                        image: img,
+                        // 图标所用图片大小
+                        imageSize: new AMap.Size(30, 30),
+                        // 图标取图偏移量
+                        imageOffset: new AMap.Pixel(0, 0)
+                    });
+
+
+
                     setTimeout(function(){
+                      window[temp] = new AMap.Marker({
+                          icon: Icon,
+                          position: [marker.position[0], marker.position[1]],
+                          offset: new AMap.Pixel(0, -0)
+                      });
                       window[name1] = new AMap.Marker({
                           icon: Icon1,
                           position: [marker.position[0], marker.position[1]],
                           offset: new AMap.Pixel(-8, -25)
                       });
+
                       window[name2] = new AMap.Marker({
                           icon: Icon2,
                           position: [marker.position[0], marker.position[1]],
                           offset: new AMap.Pixel(13, -25)
                       });
+                      window[temp].setMap(map);
                       window[name1].setMap(map);
                       window[name2].setMap(map);
                     },500)
