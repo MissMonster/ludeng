@@ -42,3 +42,27 @@ export function queryTimeSet(terminalId) {
         method: 'get'
     })
 }
+
+// 获取地址位置
+export function queryGmtSet(terminalId) {
+    return request({
+        url: '/api/v1/queryGmtSet/' + terminalId,
+        method: 'get'
+    })
+}
+
+// 开关时间设置
+export function queryRelaySet(terminalId) {
+    return request({
+        url: '/api/v1/queryRelaySet/' + terminalId,
+        method: 'get'
+    })
+}
+
+// 漏电保护设置
+export function queryLeakageInfo(terminalId) {
+    return request({
+        url: '/api/v1/queryLeakageInfo/' + terminalId,
+        method: 'get'
+    })
+}
