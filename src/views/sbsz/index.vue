@@ -122,7 +122,7 @@
             <el-table-column label="A相电流" align="center" prop="i1a" :show-overflow-tooltip="true" />
             <el-table-column label="B相电流" align="center" prop="i1b" :show-overflow-tooltip="true" />
             <el-table-column label="C相电流" align="center" prop="i1c" :show-overflow-tooltip="true" />
-            <el-table-column
+            <!-- <el-table-column
               label="操作"
               align="center"
               width="100"
@@ -132,7 +132,7 @@
                 <el-switch v-model="of1"></el-switch>
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <el-table
             v-loading="loading"
@@ -154,7 +154,7 @@
             <el-table-column label="A相电流" align="center" prop="i2a" :show-overflow-tooltip="true" />
             <el-table-column label="B相电流" align="center" prop="i2b" :show-overflow-tooltip="true" />
             <el-table-column label="C相电流" align="center" prop="i2c" :show-overflow-tooltip="true" />
-            <el-table-column
+            <!-- <el-table-column
               label="操作"
               align="center"
               width="100"
@@ -164,7 +164,7 @@
                 <el-switch v-model="of2"></el-switch>
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <el-table
             v-loading="loading"
@@ -191,7 +191,7 @@
             <el-table-column label="A相电流" align="center" prop="i3a" :show-overflow-tooltip="true" />
             <el-table-column label="B相电流" align="center" prop="i3b" :show-overflow-tooltip="true" />
             <el-table-column label="C相电流" align="center" prop="i3c" :show-overflow-tooltip="true" />
-            <el-table-column
+            <!-- <el-table-column
               label="操作"
               align="center"
               width="100"
@@ -201,7 +201,7 @@
                 <el-switch v-model="of3"></el-switch>
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <el-table
             v-loading="loading"
@@ -223,7 +223,7 @@
             <el-table-column label="A相电流" align="center" prop="i4a" :show-overflow-tooltip="true" />
             <el-table-column label="B相电流" align="center" prop="i4b" :show-overflow-tooltip="true" />
             <el-table-column label="C相电流" align="center" prop="i4c" :show-overflow-tooltip="true" />
-            <el-table-column
+            <!-- <el-table-column
               label="操作"
               align="center"
               width="100"
@@ -233,15 +233,14 @@
                 <el-switch v-model="of4"></el-switch>
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
 
           <div style="margin:15px 0;">键盘锁</div>
           <div>
-            <el-switch v-model="value" active-text="已解锁" inactive-text="已锁定"></el-switch>
+            <el-switch v-model="value" @change="jpsfn" active-text="已解锁" inactive-text="已锁定"></el-switch>
           </div>
         </el-tab-pane>
-
         <el-tab-pane label="校准设备时钟">
           <div style="margin-bottom:15px;">校准设备时钟</div>
           <el-table v-loading="loading" :key="reflush" :data="timedata" stripe border>
@@ -291,10 +290,10 @@
               class-name="small-padding fixed-width"
             >
               <span>
-                <el-button size="mini" type="text" icon="el-icon-edit" >招测</el-button>
+                <el-button size="mini" @click="handlezc" type="text" icon="el-icon-edit" >招测</el-button>
               </span>
               <span>
-                <el-button size="mini" type="text" icon="el-icon-edit" >校时</el-button>
+                <el-button size="mini" @click="jsfn" type="text" icon="el-icon-edit" >校时</el-button>
               </span>
             </el-table-column>
           </el-table>
@@ -304,15 +303,16 @@
             地理位置及策略设置
 
             <div style="margin-top:15px;">
-              已选择的策略:  <el-select style="margin-right:15px;" size="mini" v-model="value" placeholder="请选择">
+              已选择的策略:  <el-select @change="dlslch" style="margin-right:15px;" size="mini" v-model="dldata.strategy_set_id" placeholder="请选择">
                             <el-option
                               v-for="item in options"
-                              :key="item.value"
-                              :label="item.label"
-                              :value="item.value">
+                              :key="item.Id"
+                              :label="item.name"
+                              :value="item.Id"
+                              >
                             </el-option>
                           </el-select>
-              策略描述: <input disabled type="text" name="" id="">
+              策略描述: <input disabled style="width:500px;" type="text" v-model="dlclms" name="" id="">
               
             </div>
 
@@ -324,6 +324,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldata.gmt_sign" placeholder="请选择">
                     <el-option
                       v-for="item in sqop"
@@ -342,6 +343,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldata.longit_sign" placeholder="请选择">
                     <el-option
                       v-for="item in jdop"
@@ -359,6 +361,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldata.latit_sign" placeholder="请选择">
                     <el-option
                       v-for="item in wdop"
@@ -377,10 +380,10 @@
               class-name="small-padding fixed-width"
             >
               <span>
-                <el-button size="mini" type="text" icon="el-icon-edit" >招测</el-button>
+                <el-button size="mini" @click="handlezc" type="text" icon="el-icon-edit" >招测</el-button>
               </span>
               <span>
-                <el-button size="mini" type="text" icon="el-icon-edit" >设置</el-button>
+                <el-button size="mini" @click="dlsz" type="text" icon="el-icon-edit" >设置</el-button>
               </span>
             </el-table-column>
           </el-table>
@@ -390,19 +393,19 @@
           <div style="margin-bottom:15px;">
             开关时间及策略设置
             <div style="margin-top:15px;">
-              已选择的策略:  <el-select style="margin-right:15px;" size="mini" v-model="value" placeholder="请选择">
+              已选择的策略:  <el-select @change="kgslch" style="margin-right:15px;" size="mini" v-model="kgsjdata.strategy_set_id" placeholder="请选择">
                             <el-option
                               v-for="item in options"
-                              :key="item.value"
-                              :label="item.label"
-                              :value="item.value">
+                              :key="item.Id"
+                              :label="item.name"
+                              :value="item.Id">
                             </el-option>
                           </el-select>
-              策略描述: <input disabled type="text" name="" id="">
+              策略描述: <input disabled style="width:500px;" type="text" v-model="kgclms" name="" id="">
               
-              <el-button style="margin-left:20px;" type="success">恢复出厂设置</el-button>
-              <el-button type="success">招测</el-button>
-              <el-button type="success">设置</el-button>
+              <el-button style="margin-left:20px;" @click="hfccsz" type="success">恢复出厂设置</el-button>
+              <el-button type="success" @click="handlezc">招测</el-button>
+              <el-button type="success" @click="kgsz">设置</el-button>
             </div>
           </div>
           <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
@@ -412,6 +415,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.one_on_f" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -428,6 +432,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.one_manual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -444,6 +449,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.one_open_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -460,6 +466,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
                 </template>
               </el-table-column>
@@ -469,6 +476,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_minute">
                 </template>
               </el-table-column>
@@ -478,6 +486,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.one_close_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -494,6 +503,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.one_close_hour">
                 </template>
               </el-table-column>
@@ -503,6 +513,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.one_close_minute">
                 </template>
               </el-table-column>
@@ -514,6 +525,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.two_on_f" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -530,6 +542,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.two_manual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -546,6 +559,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.two_open_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -562,6 +576,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.two_open_hour">
                 </template>
               </el-table-column>
@@ -571,6 +586,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.two_open_minute">
                 </template>
               </el-table-column>
@@ -580,6 +596,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.two_close_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -596,6 +613,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.two_close_hour">
                 </template>
               </el-table-column>
@@ -605,6 +623,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.two_close_minute">
                 </template>
               </el-table-column>
@@ -616,6 +635,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.three_on_f" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -632,6 +652,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.three_manual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -648,6 +669,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.three_open_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -664,6 +686,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.three_open_hour">
                 </template>
               </el-table-column>
@@ -673,6 +696,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.three_open_minute">
                 </template>
               </el-table-column>
@@ -682,6 +706,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.three_close_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -698,6 +723,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.three_close_hour">
                 </template>
               </el-table-column>
@@ -707,6 +733,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.three_close_minute">
                 </template>
               </el-table-column>
@@ -718,6 +745,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.four_on_f" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -734,6 +762,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.four_manual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -750,6 +779,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.four_open_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -766,6 +796,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.four_open_hour">
                 </template>
               </el-table-column>
@@ -775,6 +806,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.four_open_minute">
                 </template>
               </el-table-column>
@@ -784,6 +816,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="kgsjdata.four_close_mode" placeholder="请选择">
                     <el-option
                       v-for="item in kdop"
@@ -800,6 +833,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.four_close_hour">
                 </template>
               </el-table-column>
@@ -809,6 +843,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="kgsjdata.four_close_minute">
                 </template>
               </el-table-column>
@@ -819,15 +854,16 @@
           <div style="margin-bottom;15px;">
             漏电保护及策略设置
             <div style="margin-top:15px;">
-                已选择的策略:  <el-select style="margin-right:15px;" size="mini" v-model="value" placeholder="请选择">
+                已选择的策略:  <el-select @change="ldslch" style="margin-right:15px;" size="mini" v-model="ldbhdata.strategy_set_id" placeholder="请选择">
                               <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
+                              v-for="item in options"
+                              :key="item.Id"
+                              :label="item.name"
+                              :value="item.Id"
+                              >
+                            </el-option>
                             </el-select>
-                策略描述: <input disabled type="text" name="" id="">
+                策略描述: <input disabled style="width:500px;" v-model="ldclms" type="text" name="" id="">
             </div>  
           </div>
 
@@ -838,6 +874,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="ldbhdata.i_lock" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -854,6 +891,7 @@
                 class-name="small-padding fixed-width"
               >
                   <template slot-scope="scope">
+                    <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="ldbhdata.is">
                 </template>
               </el-table-column>
@@ -863,6 +901,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="ldbhdata.iof" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -879,6 +918,7 @@
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="ldbhdata.il">
                 </template>
               </el-table-column>
@@ -889,19 +929,34 @@
               class-name="small-padding fixed-width"
             >
               <span>
-                <el-button size="mini" type="text" icon="el-icon-edit" >招测</el-button>
+                <el-button size="mini" type="text" @click="handlezc" icon="el-icon-edit" >招测</el-button>
               </span>
               <span>
-                <el-button size="mini" type="text" icon="el-icon-edit" >设置</el-button>
+                <el-button size="mini" type="text" @click="ldsz" icon="el-icon-edit" >设置</el-button>
               </span>
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="报警勾选及策略">报警勾选及策略</el-tab-pane>
+        <el-tab-pane label="报警勾选及策略">         
+          <div style="margin-bottom;15px;">
+            报警勾选及策略
+            <div style="margin-top:15px;">
+                已选择的策略:  <el-select style="margin-right:15px;" size="mini" v-model="value" placeholder="请选择">
+                              <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                策略描述: <input disabled type="text" name="" id="">
+            </div>  
+          </div>
+
+        </el-tab-pane>
         <el-tab-pane label="基本信息设置">基本信息设置</el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
-        <!-- <el-button type="primary" @click="submitForm">确 定</el-button> -->
         <el-button type="primary" @click="cancel">退出设置</el-button>
       </div>
     </el-dialog>
@@ -917,7 +972,14 @@ import {
   queryTimeSet,
   queryGmtSet,
   queryRelaySet,
-  queryLeakageInfo
+  queryLeakageInfo,
+  sendLock,
+  sendTimeSet,
+  sendGmtSet,
+  sendInitSet,
+  sendRelaySet,
+  sendLeakageInfo
+
 } from "@/api/sbsz";
 import {
   terminalInfo,
@@ -928,6 +990,7 @@ import {
   heartInfo,
   sendHeartAll
 } from "@/api/sblist";
+import { strategySetList ,strategySetInfo , addStrategySet , editStrategySet , delStrategySet} from "@/api/clsz";
 export default {
   name: "sblist",
   data() {
@@ -945,7 +1008,10 @@ export default {
       kgsjarrdata:[],
       ldbharrdata:[],
       sbid: "",
-
+      //策略描述
+      dlclms:'',
+      kgclms:'',
+      ldclms:'',
       // select
       kgop: [{
           value: 0,
@@ -989,6 +1055,8 @@ export default {
           value: 1,
           label: '西经'
       }], 
+      options:[],
+
       dldata:{},
       kgsjdata:{},
       ldbhdata:{},
@@ -1015,6 +1083,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getcl();
   },
   computed: {},
   methods: {
@@ -1024,13 +1093,47 @@ export default {
     adda(data) {
       return "" + parseFloat(data).toFixed(2) + "A";
     },
+    //策略描述
+    dlslch(data){
+      console.log(data)
+      this.dlclms = '';
+      for(var i=0;i<this.options.length;i++){
+        if(this.options[i].Id==data){
+          this.dlclms = this.options[i].explains;
+        }
+      }      
+    },
+    kgslch(data){
+      console.log(data)
+      this.kgclms = '';
+      for(var i=0;i<this.options.length;i++){
+        if(this.options[i].Id==data){
+          this.kgclms = this.options[i].explains;
+        }
+      } 
+    },
+    ldslch(data){
+      console.log(data)
+      this.ldclms = '';
+      for(var i=0;i<this.options.length;i++){
+        if(this.options[i].Id==data){
+          this.ldclms = this.options[i].explains;
+        }
+      } 
+    },
+    //获取策略
+    getcl(){
+      strategySetList().then(response => {
+        // console.log(response);
+        this.options = response.data.list;
+        // var data = response.data.list;
+      });
+    },
     // 点击招测
     handlezc(id) {
-      // console.log("点击招测")
-      // console.log(id);
       var id = this.sbid;
       sendHeartByTerminalId(id).then(response => {
-        // console.log(response)
+        this.reset();
         this.$message({
           message: response.msg,
           type: "success"
@@ -1056,6 +1159,22 @@ export default {
     // 恢复自动运行
     hfzdyx() {
       sendManautoRecover(this.sbid).then(response => {
+        // console.log(response);
+        this.$message({
+          message: response.msg,
+          type: "success"
+        });
+      });
+    },
+    //设备锁
+    jpsfn(data){
+      // console.log(data)
+      var lock = data?1:0;
+      var jpsdata = {
+        "lock":lock, //
+        "terminal_id":this.sbid
+      };
+      sendLock(jpsdata).then(response => {
         // console.log(response);
         this.$message({
           message: response.msg,
@@ -1120,6 +1239,15 @@ export default {
         this.reflush = !this.reflush;
       });
     },
+    jsfn(){
+      sendTimeSet(this.sbid).then(response => {
+        // console.log(response);
+        this.$message({
+          message: response.data,
+          type: "success"
+        });
+      });
+    },
     // 获取地址位置
     hqdlwz() {
       var sbid = this.sbid;
@@ -1127,12 +1255,26 @@ export default {
       queryGmtSet(sbid).then(response => {
         // console.log(response);
         // this.print(response);
-        response.data.sq = (response.data.gmt_sign==0?'+':'-') + ' ' + response.data.gmt_hour + ':' + response.data.gmt_minute;
-        response.data.jd = (response.data.latit_sign==0?'东经':'西经') + ' ' + response.data.longit_val;
-        response.data.wd = (response.data.latit_sign==0?'北纬':'南纬') + ' ' + response.data.latit_val;
         this.dlwzdata[0] = response.data;
         this.dldata = response.data;
         this.reflush = !this.reflush;
+      });
+    },
+    dlsz(){
+      if(!this.dldata.hasOwnProperty('strategy_set_id')){
+        this.dldata.strategy_set_id = 0;
+      }
+      this.dldata.terminal_id = this.sbid;
+      for(let key  in this.dldata){
+        this.dldata[key] = Number(this.dldata[key]);
+        // console.log(key + '---' + obj[key])
+      }
+      sendGmtSet(this.dldata).then(response => {
+        // console.log(response);
+        this.$message({
+          message: response.data,
+          type: "success"
+        });
       });
     },
     // 开关时间设置
@@ -1147,16 +1289,67 @@ export default {
         this.reflush = !this.reflush;
       });
     },
+    kgsz(){
+      if(!this.kgsjdata.hasOwnProperty('strategy_set_id')){
+        this.kgsjdata.strategy_set_id = 0;
+      }
+      this.kgsjdata.terminal_id = this.sbid;
+      for(let key  in this.kgsjdata){
+        this.kgsjdata[key] = Number(this.kgsjdata[key]);
+      }
+      sendRelaySet(this.kgsjdata).then(response => {
+        // console.log(response);
+        this.$message({
+          message: response.data,
+          type: "success"
+        });
+      });
+    },
+    hfccsz(){
+      // console.log(this.kgsjdata)
+      // console.log(this.kgsjdata.strategy_set_id);
+      if(!this.kgsjdata.hasOwnProperty('strategy_set_id')){
+        this.kgsjdata.strategy_set_id = 0;
+      }
+      // return
+      var ccszdata = {
+        "strategy_set_id":this.kgsjdata.strategy_set_id, // 策略id
+        "terminal_id": this.sbid // 设备id
+      };
+      sendInitSet(ccszdata).then(response => {
+        console.log(response);
+        this.$message({
+          message: response.data,
+          type: "success"
+        });
+      });
+    },
     // 漏电保护设置
     ldbhsz() {
       var sbid = this.sbid;
       // console.log(sbid);
       queryLeakageInfo(sbid).then(response => {
         // console.log(response);
-        this.print(response);
+        // this.print(response);
         this.ldbharrdata[0] = response.data;
         this.ldbhdata = response.data;
         this.reflush = !this.reflush;
+      });
+    },
+    ldsz(){
+      if(!this.ldbhdata.hasOwnProperty('strategy_set_id')){
+        this.ldbhdata.strategy_set_id = 0;
+      }
+      this.ldbhdata.terminal_id = this.sbid;
+      for(let key  in this.ldbhdata){
+        this.ldbhdata[key] = Number(this.ldbhdata[key]);
+      }
+      sendLeakageInfo(this.ldbhdata).then(response => {
+        // console.log(response);
+        this.$message({
+          message: response.data,
+          type: "success"
+        });
       });
     },
     /** 设置按钮操作 */
@@ -1164,15 +1357,16 @@ export default {
       this.sbid = row.Id;
       // console.log(row)
       this.open = true;
+      this.reset();
+    },
+    // 刷新弹窗数据
+    reset(){
       this.sdjjps();
       this.jzsbsz();
       this.hqdlwz();
       this.kgsjsz();
-      this.ldbhsz();
-      
-    },
-    /** 提交按钮 */
-    submitForm: function() {}
+      this.ldbhsz();   
+    }
   }
 };
 </script>

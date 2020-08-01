@@ -35,10 +35,27 @@ export function sendManautoRecover(terminalId) {
     })
 }
 
+// 键盘锁
+export function sendLock(data) {
+    return request({
+        url: '/api/v1/sendLock',
+        method: 'post',
+        data
+    })
+}
+
 // 获取时间
 export function queryTimeSet(terminalId) {
     return request({
         url: '/api/v1/queryTimeSet/' + terminalId,
+        method: 'get'
+    })
+}
+
+// 同步时间
+export function sendTimeSet(terminalId) {
+    return request({
+        url: '/api/v1/sendTimeSet/' + terminalId,
         method: 'get'
     })
 }
@@ -50,6 +67,15 @@ export function queryGmtSet(terminalId) {
         method: 'get'
     })
 }
+// 设置 地理位置
+export function sendGmtSet(data) {
+    return request({
+        url: '/api/v1/sendGmtSet',
+        method: 'post',
+        data
+    })
+}
+
 
 // 开关时间设置
 export function queryRelaySet(terminalId) {
@@ -58,11 +84,35 @@ export function queryRelaySet(terminalId) {
         method: 'get'
     })
 }
+// 开关时间设置
+export function sendRelaySet(data) {
+    return request({
+        url: '/api/v1/sendRelaySet',
+        method: 'post',
+        data
+    })
+}
+// 初始化设置
+export function sendInitSet(data) {
+    return request({
+        url: '/api/v1/sendInitSet',
+        method: 'post',
+        data
+    })
+}
 
 // 漏电保护设置
 export function queryLeakageInfo(terminalId) {
     return request({
         url: '/api/v1/queryLeakageInfo/' + terminalId,
         method: 'get'
+    })
+}
+
+export function sendLeakageInfo(data) {
+    return request({
+        url: '/api/v1/sendLeakageInfo',
+        method: 'post',
+        data
     })
 }
