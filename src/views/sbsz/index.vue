@@ -111,28 +111,51 @@
 
           <el-table v-loading="loading" :data="jpsdata" :key="reflush" stripe border>
             <el-table-column label="回路" align="center" :show-overflow-tooltip="true">L1</el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               label="工作模式"
               align="center"
               prop="oneManual"
               :show-overflow-tooltip="true"
-            />
+            /> -->
+            <el-table-column
+                label="工作模式"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.oneManual" placeholder="请选择">
+                    <el-option
+                      v-for="item in gzop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="输出"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.oneOnF" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN1</el-table-column>
             <el-table-column label="状态" align="center" prop="inOne" :show-overflow-tooltip="true" />
             <el-table-column label="A相电流" align="center" prop="i1a" :show-overflow-tooltip="true" />
             <el-table-column label="B相电流" align="center" prop="i1b" :show-overflow-tooltip="true" />
-            <el-table-column label="C相电流" align="center" prop="i1c" :show-overflow-tooltip="true" />
-            <!-- <el-table-column
-              label="操作"
-              align="center"
-              width="100"
-              class-name="small-padding fixed-width"
-            >
-              <template slot-scope="scope">
-                <el-switch v-model="of1"></el-switch>
-                <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-              </template>
-            </el-table-column> -->
+            <el-table-column label="C相电流" align="center" prop="i1c" :show-overflow-tooltip="true" />            
           </el-table>
           <el-table
             v-loading="loading"
@@ -143,12 +166,46 @@
             border
           >
             <el-table-column label="回路" align="center" :show-overflow-tooltip="true">L2</el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               label="工作模式"
               align="center"
               prop="twoManual"
               :show-overflow-tooltip="true"
-            />
+            /> -->
+            <el-table-column
+                label="工作模式"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.twoManual" placeholder="请选择">
+                    <el-option
+                      v-for="item in gzop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="输出"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.twoOnF" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN2</el-table-column>
             <el-table-column label="状态" align="center" prop="inTwo" :show-overflow-tooltip="true" />
             <el-table-column label="A相电流" align="center" prop="i2a" :show-overflow-tooltip="true" />
@@ -165,6 +222,7 @@
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
             </el-table-column> -->
+            
           </el-table>
           <el-table
             v-loading="loading"
@@ -175,12 +233,46 @@
             border
           >
             <el-table-column label="回路" align="center" :show-overflow-tooltip="true">L3</el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               label="工作模式"
               align="center"
               prop="threeManual"
               :show-overflow-tooltip="true"
-            />
+            /> -->
+            <el-table-column
+                label="工作模式"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.threeManual" placeholder="请选择">
+                    <el-option
+                      v-for="item in gzop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="输出"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.threeOnF" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN3</el-table-column>
             <el-table-column
               label="状态"
@@ -202,6 +294,7 @@
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
             </el-table-column> -->
+            
           </el-table>
           <el-table
             v-loading="loading"
@@ -212,12 +305,46 @@
             border
           >
             <el-table-column label="回路" align="center" :show-overflow-tooltip="true">L4</el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               label="工作模式"
               align="center"
               prop="fourManual"
               :show-overflow-tooltip="true"
-            />
+            /> -->
+            <el-table-column
+                label="工作模式"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.fourManual" placeholder="请选择">
+                    <el-option
+                      v-for="item in gzop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="输出"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.fourOnF" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN4</el-table-column>
             <el-table-column label="状态" align="center" prop="inFour" :show-overflow-tooltip="true" />
             <el-table-column label="A相电流" align="center" prop="i4a" :show-overflow-tooltip="true" />
@@ -234,11 +361,12 @@
                 <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
               </template>
             </el-table-column> -->
+            
           </el-table>
 
           <div style="margin:15px 0;">键盘锁</div>
           <div>
-            <el-switch v-model="value" @change="jpsfn" active-text="已解锁" inactive-text="已锁定"></el-switch>
+            <el-switch v-model="jps_data.lock" @change="jpsfn" active-text="键盘锁定" inactive-text="键盘解锁"></el-switch>
           </div>
         </el-tab-pane>
         <el-tab-pane label="校准设备时钟">
@@ -301,7 +429,6 @@
         <el-tab-pane label="地理位置及策略设置">
           <div style="margin-bottom:15px;">
             地理位置及策略设置
-
             <div style="margin-top:15px;">
               已选择的策略:  <el-select @change="dlslch" style="margin-right:15px;" size="mini" v-model="dldata.strategy_set_id" placeholder="请选择">
                             <el-option
@@ -998,10 +1125,6 @@ export default {
       // test
       value: true,
       reflush: true,
-      of1: "",
-      of2: "",
-      of3: "",
-      of4: "",
       jpsdata: [],
       timedata: [],
       dlwzdata: [],
@@ -1060,6 +1183,7 @@ export default {
       dldata:{},
       kgsjdata:{},
       ldbhdata:{},
+      jps_data:{},
       // 遮罩层
       loading: true,
       // 总条数
@@ -1142,13 +1266,7 @@ export default {
     },
     // 发送手动指令
     fssdzl() {
-      var onfdata = {
-        relay_one_onf: this.of1 ? 1 : 0,
-        relay_two_onf: this.of2 ? 1 : 0,
-        relay_three_onf: this.of3 ? 1 : 0,
-        relay_four_onf: this.of4 ? 1 : 0
-      };
-      sendManautoSet(this.sbid, onfdata).then(response => {
+      sendManautoSet(this.sbid, this.jps_data).then(response => {
         // console.log(response);
         this.$message({
           message: response.msg,
@@ -1220,11 +1338,20 @@ export default {
         response.data.i4a = this.adda(response.data.i4a);
         response.data.i4b = this.adda(response.data.i4b);
         response.data.i4c = this.adda(response.data.i4c);
-        this.of1 = response.data.oneOnF == "开" ? true : false;
-        this.of2 = response.data.twoOnF == "开" ? true : false;
-        this.of3 = response.data.threeOnF == "开" ? true : false;
-        this.of4 = response.data.fourOnF == "开" ? true : false;
+
         this.jpsdata[0] = response.data;
+        this.jps_data = response.data;
+
+        this.jps_data.oneOnF = this.jps_data.oneOnF=="开"?1:0;
+        this.jps_data.twoOnF = this.jps_data.twoOnF=="开"?1:0;
+        this.jps_data.threeOnF = this.jps_data.threeOnF=="开"?1:0;
+        this.jps_data.fourOnF = this.jps_data.fourOnF=="开"?1:0;
+
+        this.jps_data.oneManual = this.jps_data.oneManual=="自动"?0:1;
+        this.jps_data.twoManual = this.jps_data.twoManual=="自动"?0:1;
+        this.jps_data.threeManual = this.jps_data.threeManual=="自动"?0:1;
+        this.jps_data.fourManual = this.jps_data.fourManual=="自动"?0:1;
+        // console.log(this.jps_data)
         this.reflush = !this.reflush;
         // this.print(this.jpsdata);
       });
