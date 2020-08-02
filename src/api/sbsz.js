@@ -116,3 +116,18 @@ export function sendLeakageInfo(data) {
         data
     })
 }
+
+// 告警配置
+export function queryAlarmSetInfo(terminalId) {
+    return request({
+        url: '/api/v1/queryAlarmSetInfo?terminalId=' + terminalId,
+        method: 'get'
+    })
+}
+export function editAlarmSet(data) {
+    return request({
+        url: '/api/v1/editAlarmSet',
+        method: 'put',
+        data
+    })
+}

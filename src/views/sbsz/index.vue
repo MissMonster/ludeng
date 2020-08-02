@@ -99,7 +99,7 @@
     </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1250px">
+    <el-dialog :title="title" :visible.sync="open" width="1300px">
       <el-tabs type="border-card">
         <el-tab-pane label="手动及键盘锁">
           <div style="margin-bottom:15px;">
@@ -366,7 +366,7 @@
 
           <div style="margin:15px 0;">键盘锁</div>
           <div>
-            <el-switch v-model="jps_data.lock" @change="jpsfn" active-text="键盘锁定" inactive-text="键盘解锁"></el-switch>
+            <el-switch v-model="lockshow" @change="jpsfn" active-text="键盘锁定" inactive-text="键盘解锁"></el-switch>
           </div>
         </el-tab-pane>
         <el-tab-pane label="校准设备时钟">
@@ -976,7 +976,231 @@
               </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="电流电压及策略设置">电流电压及策略设置</el-tab-pane>
+        <el-tab-pane label="电流电压及策略设置">
+          <div style="margin-bottom:15px;">
+            电流采样参数
+            <div style="margin-top:15px;">
+              已选择的策略:  <el-select @change="dlslch" style="margin-right:15px;" size="mini" v-model="dldata.strategy_set_id" placeholder="请选择">
+                            <el-option
+                              v-for="item in options"
+                              :key="item.Id"
+                              :label="item.name"
+                              :value="item.Id"
+                              >
+                            </el-option>
+                          </el-select>
+              策略描述: <input disabled style="width:500px;" type="text" v-model="dlclms" name="" id="">  
+            </div>
+          </div>
+          <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L1</el-table-column>
+              <el-table-column
+                align="center"
+                label="互感器"
+                :show-overflow-tooltip="true"
+              >CT1</el-table-column>
+              <el-table-column
+                label="变比"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+          </el-table>
+          <el-table :show-header="false" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L2</el-table-column>
+              <el-table-column
+                align="center"
+                label="互感器"
+                :show-overflow-tooltip="true"
+              >CT2</el-table-column>
+              <el-table-column
+                label="变比"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+          </el-table>
+          <el-table :show-header="false" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L3</el-table-column>
+              <el-table-column
+                align="center"
+                label="互感器"
+                :show-overflow-tooltip="true"
+              >CT3</el-table-column>
+              <el-table-column
+                label="变比"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+          </el-table>
+          <el-table :show-header="false" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L4</el-table-column>
+              <el-table-column
+                align="center"
+                label="互感器"
+                :show-overflow-tooltip="true"
+              >CT4</el-table-column>
+              <el-table-column
+                label="变比"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相标准电流"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="kgsjdata.one_open_hour">
+                </template>
+              </el-table-column>
+          </el-table>
+        </el-tab-pane>
         <el-tab-pane label="漏电保护及策略设置">
           <div style="margin-bottom;15px;">
             漏电保护及策略设置
@@ -1068,17 +1292,109 @@
           <div style="margin-bottom;15px;">
             报警勾选及策略
             <div style="margin-top:15px;">
-                已选择的策略:  <el-select style="margin-right:15px;" size="mini" v-model="value" placeholder="请选择">
-                              <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
-                            </el-select>
-                策略描述: <input disabled type="text" name="" id="">
-            </div>  
+              已选择的策略:  <el-select @change="bjslch" style="margin-right:15px;" size="mini" v-model="bj_data.strategy_id" placeholder="请选择">
+                            <el-option
+                              v-for="item in options"
+                              :key="item.Id"
+                              :label="item.name"
+                              :value="item.Id"
+                              >
+                            </el-option>
+                          </el-select>
+              策略描述: <input disabled style="width:500px;" type="text" v-model="bjclms" name="" id="">
+               <el-button style="margin-left:15px;" @click="bjsz" type="success">设置</el-button>
+            </div>
           </div>
+          <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="dlwzdata" stripe border>
+              <el-table-column label="亮灯率低报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.rol_set"></el-checkbox>
+                </template>
+              </el-table-column>
+             <el-table-column label="白天亮灯报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.day_light"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="电压异常报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.strategy_ua">Ua</el-checkbox>
+                  <el-checkbox v-model="bj_data.strategy_ub">Ub</el-checkbox>
+                  <el-checkbox v-model="bj_data.strategy_uc">Uc</el-checkbox>
+                  <el-checkbox style="display:none;" v-model="value">L4</el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="电流异常报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.electricity_one">L1</el-checkbox>
+                  <el-checkbox v-model="bj_data.electricity_two">L2</el-checkbox>
+                  <el-checkbox v-model="bj_data.electricity_three">L3</el-checkbox>
+                  <el-checkbox v-model="bj_data.electricity_four">L4</el-checkbox>
+                  <el-checkbox style="display:none;" v-model="value">L4</el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="意外亮灯报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.light_up_one">L1</el-checkbox>
+                  <el-checkbox v-model="bj_data.light_up_two">L2</el-checkbox>
+                  <el-checkbox v-model="bj_data.light_up_three">L3</el-checkbox>
+                  <el-checkbox v-model="bj_data.light_up_four">L4</el-checkbox>
+                  <el-checkbox style="display:none;" v-model="value">L4</el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="意外灭灯报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.light_out_one">L1</el-checkbox>
+                  <el-checkbox v-model="bj_data.light_out_two">L2</el-checkbox>
+                  <el-checkbox v-model="bj_data.light_out_three">L3</el-checkbox>
+                  <el-checkbox v-model="bj_data.light_out_four">L4</el-checkbox>
+                  <el-checkbox style="display:none;" v-model="value">L4</el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="柜门打开报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.door_open"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="键盘解锁报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.unlock"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="温度过高报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.temprate"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="电池供电报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.battery"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="设备离线报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.offline"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column label="漏电报警报警" align="center">
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-checkbox v-model="bj_data.leakage"></el-checkbox>
+                </template>
+              </el-table-column>
+          </el-table>
+          
 
         </el-tab-pane>
         <el-tab-pane label="基本信息设置">基本信息设置</el-tab-pane>
@@ -1105,7 +1421,9 @@ import {
   sendGmtSet,
   sendInitSet,
   sendRelaySet,
-  sendLeakageInfo
+  sendLeakageInfo,
+  queryAlarmSetInfo,
+  editAlarmSet
 
 } from "@/api/sbsz";
 import {
@@ -1128,13 +1446,18 @@ export default {
       jpsdata: [],
       timedata: [],
       dlwzdata: [],
+      bjdata:[],
+      bj_data:{},
       kgsjarrdata:[],
       ldbharrdata:[],
       sbid: "",
+      // switch
+      lockshow:'',
       //策略描述
       dlclms:'',
       kgclms:'',
       ldclms:'',
+      bjclms:'',
       // select
       kgop: [{
           value: 0,
@@ -1245,6 +1568,14 @@ export default {
         }
       } 
     },
+    bjslch(data){
+      this.bjclms = '';
+      for(var i=0;i<this.options.length;i++){
+        if(this.options[i].Id==data){
+          this.bjclms = this.options[i].explains;
+        }
+      } 
+    },
     //获取策略
     getcl(){
       strategySetList().then(response => {
@@ -1286,7 +1617,8 @@ export default {
     },
     //设备锁
     jpsfn(data){
-      // console.log(data)
+      console.log(data)
+      // this.print(this.jps_data)
       var lock = data?1:0;
       var jpsdata = {
         "lock":lock, //
@@ -1326,6 +1658,8 @@ export default {
       var sbid = this.sbid;
       queryManautoData(sbid).then(response => {
         // console.log(response);
+        this.title = '设备设置：'+ response.data.terminal_name;
+        this.open = true;
         response.data.i1a = this.adda(response.data.i1a);
         response.data.i1b = this.adda(response.data.i1b);
         response.data.i1c = this.adda(response.data.i1c);
@@ -1341,7 +1675,7 @@ export default {
 
         this.jpsdata[0] = response.data;
         this.jps_data = response.data;
-
+        this.lockshow = this.jps_data.lock?true:false;
         this.jps_data.oneOnF = this.jps_data.oneOnF=="开"?1:0;
         this.jps_data.twoOnF = this.jps_data.twoOnF=="开"?1:0;
         this.jps_data.threeOnF = this.jps_data.threeOnF=="开"?1:0;
@@ -1351,7 +1685,7 @@ export default {
         this.jps_data.twoManual = this.jps_data.twoManual=="自动"?0:1;
         this.jps_data.threeManual = this.jps_data.threeManual=="自动"?0:1;
         this.jps_data.fourManual = this.jps_data.fourManual=="自动"?0:1;
-        // console.log(this.jps_data)
+        // this.print(this.jps_data)
         this.reflush = !this.reflush;
         // this.print(this.jpsdata);
       });
@@ -1444,7 +1778,7 @@ export default {
         "terminal_id": this.sbid // 设备id
       };
       sendInitSet(ccszdata).then(response => {
-        console.log(response);
+        // console.log(response);
         this.$message({
           message: response.data,
           type: "success"
@@ -1479,11 +1813,32 @@ export default {
         });
       });
     },
+    // 告警配置
+    gjpz(){
+      queryAlarmSetInfo(this.sbid).then(response => {
+        // console.log(response);
+        this.bj_data = response.data;
+        this.print(this.bj_data)
+        this.reflush = !this.reflush;
+        // this.options = response.data.list;
+        // var data = response.data.list;
+      });
+    },
+    bjsz(){
+      // this.print(this.bj_data)
+      editAlarmSet(this.bj_data).then(response => {
+        console.log(response);
+        this.$message({
+          message: response.msg,
+          type: "success"
+        });
+      });
+    },
     /** 设置按钮操作 */
     handleUpdate(row) {
       this.sbid = row.Id;
       // console.log(row)
-      this.open = true;
+      
       this.reset();
     },
     // 刷新弹窗数据
@@ -1493,6 +1848,7 @@ export default {
       this.hqdlwz();
       this.kgsjsz();
       this.ldbhsz();   
+      this.gjpz();
     }
   }
 };
