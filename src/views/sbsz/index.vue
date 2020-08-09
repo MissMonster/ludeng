@@ -538,7 +538,7 @@
             </div>
           </div>
           <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
-              <el-table-column
+              <!-- <el-table-column
                 label="L1"
                 align="center"
                 class-name="small-padding fixed-width"
@@ -571,7 +571,7 @@
                     </el-option>
                   </el-select>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column
                 label="开灯模式"
                 align="center"
@@ -648,7 +648,7 @@
               </el-table-column>
           </el-table>
           <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
-              <el-table-column
+              <!-- <el-table-column
                 label="L2"
                 align="center"
                 class-name="small-padding fixed-width"
@@ -681,7 +681,7 @@
                     </el-option>
                   </el-select>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column
                 label="开灯模式"
                 align="center"
@@ -758,7 +758,7 @@
               </el-table-column>
           </el-table>
           <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
-              <el-table-column
+              <!-- <el-table-column
                 label="L3"
                 align="center"
                 class-name="small-padding fixed-width"
@@ -791,7 +791,7 @@
                     </el-option>
                   </el-select>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column
                 label="开灯模式"
                 align="center"
@@ -868,7 +868,7 @@
               </el-table-column>
           </el-table>
           <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
-              <el-table-column
+              <!-- <el-table-column
                 label="L4"
                 align="center"
                 class-name="small-padding fixed-width"
@@ -901,7 +901,7 @@
                     </el-option>
                   </el-select>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column
                 label="开灯模式"
                 align="center"
