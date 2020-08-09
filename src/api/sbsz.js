@@ -101,6 +101,24 @@ export function sendInitSet(data) {
     })
 }
 
+//  电流电压及策略设置
+export function queryElectricitySetInfo(id) {
+    return request({
+        url: '/api/v1/queryElectricitySetInfo?id=' + id,
+        method: 'get'
+    })
+}
+export function editElectricitySet(data) {
+    return request({
+        url: '/api/v1/editElectricitySet',
+        method: 'post',
+        data
+    })
+}
+
+
+
+
 // 漏电保护设置
 export function queryLeakageInfo(terminalId) {
     return request({

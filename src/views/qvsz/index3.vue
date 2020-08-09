@@ -86,67 +86,62 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="国家：" prop="country">
-              <!-- <el-select @change="c(1)" v-model="form.country" filterable placeholder="请选择">
+              <el-select @change="c(1)" v-model="form.country" filterable placeholder="请选择">
                 <el-option
                   v-for="item in optionguo"
                   :key="item.country"
                   :label="item.name"
                   :value="item.country">
                 </el-option>
-              </el-select> -->
-              <input class="t_inp" type="text" placeholder="请输入国家" v-model="form.country" name="" id="">
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item  label="省：" prop="province">
-              <!-- <el-select @focus="getsheng" @change="c(2)" v-model="form.province" filterable placeholder="请选择">
+              <el-select @focus="getsheng" @change="c(2)" v-model="form.province" filterable placeholder="请选择">
                 <el-option
                   v-for="item in optionsheng"
                   :key="item.province"
                   :label="item.name"
                   :value="item.province">
                 </el-option>
-              </el-select> -->
-              <input class="t_inp" type="text" placeholder="请输入省" v-model="form.province" name="" id="">
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="市：" prop="name">
-              <!-- <el-select @focus="getshi" @change="c(3)" v-model="form.city" filterable placeholder="请选择">
+              <el-select @focus="getshi" @change="c(3)" v-model="form.city" filterable placeholder="请选择">
                 <el-option
                   v-for="item in optionshi"
                   :key="item.city"
                   :label="item.name"
                   :value="item.city">
                 </el-option>
-              </el-select> -->
-              <input class="t_inp" type="text" placeholder="请输入市" v-model="form.city" name="" id="">
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="区：" prop="name">
-              <!-- <el-select @focus="getqv" @change="c(4)" v-model="form.area" filterable placeholder="请选择">
+              <el-select @focus="getqv" @change="c(4)" v-model="form.area" filterable placeholder="请选择">
                 <el-option
                   v-for="item in optionqv"
                   :key="item.area"
                   :label="item.name"
                   :value="item.area">
                 </el-option>
-              </el-select> -->
-              <input class="t_inp" type="text" placeholder="请输入区" v-model="form.area" name="" id="">
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="镇：" prop="name">
-              <!-- <el-select @focus="getzhen" v-model="form.town" filterable placeholder="请选择">
+              <el-select @focus="getzhen" v-model="form.town" filterable placeholder="请选择">
                 <el-option
                   v-for="item in optionzhen"
                   :key="item.town"
                   :label="item.name"
                   :value="item.town">
                 </el-option>
-              </el-select> -->
-              <input class="t_inp" type="text" placeholder="请输入镇" v-model="form.town" name="" id="">
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -405,10 +400,3 @@ export default {
   }
 }
 </script>
-<style lang="css" scoped>
-  .t_inp{
-    width:195px;
-    height:36px;
-    padding-left:10px;
-  }
-</style>

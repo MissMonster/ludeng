@@ -479,8 +479,7 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                  <input style="height: 26px;width: 100px;margin-left: 20px;" type="text" v-model="dldata.longit">.
-                  <input style="height: 26px;width: 100px;" type="text" v-model="dldata.longit_f">
+                  <input style="height: 26px;width: 100px;margin-left: 20px;" type="text" v-model="dldata.longit_val">
                 </template>
               </el-table-column>
               <el-table-column
@@ -498,8 +497,7 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                  <input style="height: 26px;width: 100px;margin-left: 20px;" type="text" v-model="dldata.latit">.
-                  <input style="height: 26px;width: 100px;" type="text" v-model="dldata.latit_f">
+                  <input style="height: 26px;width: 100px;margin-left: 20px;" type="text" v-model="dldata.latit_val">
                 </template>
               </el-table-column>           
             <el-table-column
@@ -2046,7 +2044,7 @@ export default {
       // console.log(sbid);
       queryGmtSet(sbid).then(response => {
         // console.log(response);
-        this.print(response);
+        // this.print(response);
         this.dlwzdata[0] = response.data;
         this.dldata = response.data;
         this.reflush = !this.reflush;
@@ -2129,7 +2127,7 @@ export default {
     },
     dldyszfn(){
       editElectricitySet(this.dldy_data).then(response => {
-        // this.print(response);
+        this.print(response);
         this.$message({
           message: response.data,
           type: "success"
