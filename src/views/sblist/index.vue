@@ -79,6 +79,7 @@
         <el-table-column property="terminalModel" label="设备型号"></el-table-column>
         <el-table-column property="terminalSn" label="设备序列号"></el-table-column>
         <el-table-column property="terminalPhone" label="设备手机号"></el-table-column>
+        <el-table-column property="terminalImsi" label="IMSI码"></el-table-column>
         <el-table-column property="area_city" label="所在区域"></el-table-column>
         <el-table-column property="terminal_addr" label="安装地点"></el-table-column>
         <el-table-column property="terminalLongitude" label="安装地经度"></el-table-column>

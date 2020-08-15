@@ -573,6 +573,11 @@
                 </template>
               </el-table-column> -->
               <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L1</el-table-column>
+              <el-table-column
                 label="开灯模式"
                 align="center"
                 class-name="small-padding fixed-width"
@@ -647,7 +652,7 @@
                 </template>
               </el-table-column>
           </el-table>
-          <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
+          <el-table  :show-header="false" v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
               <!-- <el-table-column
                 label="L2"
                 align="center"
@@ -682,6 +687,11 @@
                   </el-select>
                 </template>
               </el-table-column> -->
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L2</el-table-column>
               <el-table-column
                 label="开灯模式"
                 align="center"
@@ -757,7 +767,7 @@
                 </template>
               </el-table-column>
           </el-table>
-          <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
+          <el-table  :show-header="false" v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
               <!-- <el-table-column
                 label="L3"
                 align="center"
@@ -792,6 +802,11 @@
                   </el-select>
                 </template>
               </el-table-column> -->
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L3</el-table-column>
               <el-table-column
                 label="开灯模式"
                 align="center"
@@ -867,7 +882,7 @@
                 </template>
               </el-table-column>
           </el-table>
-          <el-table v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
+          <el-table  :show-header="false" v-loading="loading" :key="reflush" :data="kgsjarrdata" stripe border>
               <!-- <el-table-column
                 label="L4"
                 align="center"
@@ -902,6 +917,11 @@
                   </el-select>
                 </template>
               </el-table-column> -->
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L4</el-table-column>
               <el-table-column
                 label="开灯模式"
                 align="center"
@@ -1001,23 +1021,23 @@
                 label="回路"
                 :show-overflow-tooltip="true"
               >L1</el-table-column>
-              <el-table-column
+              <!-- <el-table-column
                 align="center"
                 label="互感器"
                 :show-overflow-tooltip="true"
-              >CT1</el-table-column>
+              >CT1</el-table-column> -->
               <el-table-column
-                label="变比"
+                label="互感器变比"
                 align="center"
                 class-name="small-padding fixed-width"
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_1">
+                  CT1:<input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_1">
                 </template>
               </el-table-column>
               <el-table-column
-                label="A相标准电流(A)"
+                label="A相额定电流(A)"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1027,7 +1047,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="B相标准电流(A)"
+                label="B相额定电流(A)"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1037,7 +1057,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="C相标准电流(A)"
+                label="C相额定电流(A)"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1053,11 +1073,11 @@
                 label="回路"
                 :show-overflow-tooltip="true"
               >L2</el-table-column>
-              <el-table-column
+              <!-- <el-table-column
                 align="center"
                 label="互感器"
                 :show-overflow-tooltip="true"
-              >CT2</el-table-column>
+              >CT2</el-table-column> -->
               <el-table-column
                 label="变比"
                 align="center"
@@ -1065,7 +1085,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_2">
+                  CT2:<input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_2">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1105,11 +1125,11 @@
                 label="回路"
                 :show-overflow-tooltip="true"
               >L3</el-table-column>
-              <el-table-column
+              <!-- <el-table-column
                 align="center"
                 label="互感器"
                 :show-overflow-tooltip="true"
-              >CT3</el-table-column>
+              >CT3</el-table-column> -->
               <el-table-column
                 label="变比"
                 align="center"
@@ -1117,7 +1137,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_3">
+                  CT3:<input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_3">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1157,11 +1177,11 @@
                 label="回路"
                 :show-overflow-tooltip="true"
               >L4</el-table-column>
-              <el-table-column
+              <!-- <el-table-column
                 align="center"
                 label="互感器"
                 :show-overflow-tooltip="true"
-              >CT4</el-table-column>
+              >CT4</el-table-column> -->
               <el-table-column
                 label="变比"
                 align="center"
@@ -1169,7 +1189,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_4">
+                  CT4:<input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.scale_4">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1206,12 +1226,12 @@
           <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="dldydata" stripe border>
               <el-table-column
                 align="center"
-                label="设备接线方式"
+                label="设备只采用一组互感器"
                 :show-overflow-tooltip="true"
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldy_data.ct1All" placeholder="请选择">
+                  CT1采样总电流：<el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldy_data.ct1All" placeholder="请选择">
                     <el-option
                       v-for="item in tfop"
                       :key="item.value"
@@ -1223,7 +1243,7 @@
               </el-table-column>
               <el-table-column
                 align="center"
-                label="电流偏差门限"
+                label="电流偏差门限(%)"
                 :show-overflow-tooltip="true"
               >
                 <template slot-scope="scope">
@@ -1249,7 +1269,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="亮灯率限值"
+                label="亮灯率限值(%)"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1259,7 +1279,6 @@
                 </template>
               </el-table-column>
           </el-table>
-
           <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="dldydata" stripe border>
               <el-table-column
                 align="center"
@@ -1297,7 +1316,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="电压偏差门限"
+                label="电压偏差门限(%)"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1685,6 +1704,16 @@
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="jbxx_data.terminalPhone">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="IMSI码"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 150px;margin-left: 5px;" type="text" v-model="jbxx_data.terminalImsi">
                 </template>
               </el-table-column>
             </el-table>
@@ -2191,7 +2220,10 @@ export default {
         // this.print(response);
         this.jbxx_data = response.data;
         this.jbxx_data.country = 'CHN';
-        this.jbxx_data
+        if(this.jbxx_data.terminalModel=='RDC4M'){
+          this.jbxx_data.terminalModel = 'RDC-4M';
+        }
+        // this.jbxx_data
         this.jbxxdata[0] = response.data;
         this.reflush = !this.reflush;
       });
