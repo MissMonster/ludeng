@@ -261,7 +261,7 @@
             :cell-style="{'text-align':'center'}" border :data="ckdate" style="margin-bottom:20px;">
             <el-table-column property="i_lock" label="脱扣功能"></el-table-column>
             <el-table-column property="is" label="跳闸电流"></el-table-column>
-            <el-table-column property="iof" label="漏保开关"></el-table-column>
+            <el-table-column property="iof" label="手柄状态"></el-table-column>
             <el-table-column property="il" label="漏电流"></el-table-column>
           </el-table>
         </div>
@@ -693,9 +693,9 @@ export default {
         }
         response.data.is = response.data.is + 'mA';
         if(response.data.iof){
-          response.data.iof = '接通'
+          response.data.iof = '分闸'
         }else{
-          response.data.iof = '断开'
+          response.data.iof = '合闸'
         }
         response.data.il = response.data.il + 'mA';
 

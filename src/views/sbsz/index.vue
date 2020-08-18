@@ -1258,7 +1258,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldy_data.over_protect" placeholder="请选择">
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="dldy_data.iErrOff" placeholder="请选择">
                     <el-option
                       v-for="item in tfop"
                       :key="item.value"
@@ -1373,7 +1373,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="漏保开关"
+                label="手柄状态"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1381,7 +1381,7 @@
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="ldbhdata.iof" placeholder="请选择">
                     <el-option
-                      v-for="item in kgop"
+                      v-for="item in jbztop"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
@@ -1815,6 +1815,13 @@ export default {
       },{
           value: 1,
           label: '开'
+      }],
+      jbztop: [{
+          value: 0,
+          label: '合闸'
+      },{
+          value: 1,
+          label: '分闸'
       }],
       kdop: [{
           value: 0,
