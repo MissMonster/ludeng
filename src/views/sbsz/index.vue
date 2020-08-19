@@ -1248,7 +1248,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.lth">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.iErr">
                 </template>
               </el-table-column>
               <el-table-column
