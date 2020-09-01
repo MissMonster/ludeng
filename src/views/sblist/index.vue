@@ -726,7 +726,8 @@ export default {
     /** 查看按钮操作 */
     handleck(row) {
       this.open = true;
-      this.sxid = row.id;
+      // console.log(row)
+      this.sxid = row.terminalId;
       this.heartInfofn(this.sxid);
     },
     /** 点击招测操作 */
