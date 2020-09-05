@@ -430,7 +430,7 @@
           <div style="margin-bottom:15px;">
             地理位置及策略设置
             <div style="margin-top:15px;">
-              已选择的策略:  <el-select @change="dlslch" style="margin-right:15px;" size="mini" v-model="dldata.strategy_set_id" placeholder="请选择">
+              已选择的策略:  <el-select @change="dlslch" style="margin-right:15px;" size="mini" v-model="dldata.strategy_id" placeholder="请选择">
                             <el-option
                               v-for="item in options"
                               :key="item.Id"
@@ -522,7 +522,7 @@
           <div style="margin-bottom:15px;">
             开关时间及策略设置
             <div style="margin-top:15px;">
-              已选择的策略:  <el-select @change="kgslch" style="margin-right:15px;" size="mini" v-model="kgsjdata.strategy_set_id" placeholder="请选择">
+              已选择的策略:  <el-select @change="kgslch" style="margin-right:15px;" size="mini" v-model="kgsjdata.strategy_id" placeholder="请选择">
                             <el-option
                               v-for="item in options"
                               :key="item.Id"
@@ -1043,7 +1043,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.iaS1">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="number" v-model="dldy_data.iaS1">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1331,7 +1331,7 @@
           <div style="margin-bottom;15px;">
             漏电保护及策略设置
             <div style="margin-top:15px;">
-                已选择的策略:  <el-select @change="ldslch" style="margin-right:15px;" size="mini" v-model="ldbhdata.strategy_set_id" placeholder="请选择">
+                已选择的策略:  <el-select @change="ldslch" style="margin-right:15px;" size="mini" v-model="ldbhdata.strategy_id" placeholder="请选择">
                               <el-option
                               v-for="item in options"
                               :key="item.Id"
@@ -1346,7 +1346,7 @@
 
            <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
               <el-table-column
-                label="脱扣功能"
+                label="漏保功能"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1363,7 +1363,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="跳闸电流(mA)"
+                label="分闸电流(mA)"
                 align="center"
                 class-name="small-padding fixed-width"
               >
@@ -1376,8 +1376,10 @@
                 label="手柄状态"
                 align="center"
                 class-name="small-padding fixed-width"
+                 prop="iof"
+                 :formatter="iofFormatter"
               >
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="ldbhdata.iof" placeholder="请选择">
                     <el-option
@@ -1387,17 +1389,18 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                </template>
+                </template> -->
               </el-table-column>
               <el-table-column
                 label="漏电流(mA)"
                 align="center"
                 class-name="small-padding fixed-width"
+                prop="il"
               >
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <input style="height: 26px;width: 50px;margin-left: 5px;" type="text" v-model="ldbhdata.il">
-                </template>
+                </template> -->
               </el-table-column>
               <el-table-column
               label="操作"
@@ -1899,6 +1902,14 @@ export default {
     adda(data) {
       return "" + parseFloat(data).toFixed(2) + "A";
     },
+    iofFormatter(row, column){
+      let iof = row.iof;
+        if(iof === 0){
+          return '合闸'
+        } else {
+          return '分闸'
+        }
+    },
     //策略描述
     dlslch(data){
       // console.log(data)
@@ -2086,12 +2097,13 @@ export default {
         this.dlwzdata[0] = response.data;
         this.dldata = response.data;
         this.reflush = !this.reflush;
+        this.dlslch(response.data.strategy_id)
       });
     },
     dlsz(){
-      if(!this.dldata.hasOwnProperty('strategy_set_id')){
-        this.dldata.strategy_set_id = 0;
-      }
+      // if(!this.dldata.hasOwnProperty('strategy_set_id')){
+      //   this.dldata.strategy_set_id = 0;
+      // }
       this.dldata.terminal_id = this.sbid;
       for(let key  in this.dldata){
         this.dldata[key] = Number(this.dldata[key]);
@@ -2115,12 +2127,13 @@ export default {
         this.kgsjarrdata[0] = response.data;
         this.kgsjdata = response.data;
         this.reflush = !this.reflush;
+        this.kgslch(response.data.strategy_id)
       });
     },
     kgsz(){
-      if(!this.kgsjdata.hasOwnProperty('strategy_set_id')){
-        this.kgsjdata.strategy_set_id = 0;
-      }
+      // if(!this.kgsjdata.hasOwnProperty('strategy_set_id')){
+      //   this.kgsjdata.strategy_set_id = 0;
+      // }
       this.kgsjdata.terminal_id = this.sbid;
       for(let key  in this.kgsjdata){
         this.kgsjdata[key] = Number(this.kgsjdata[key]);
@@ -2136,12 +2149,12 @@ export default {
     hfccsz(){
       // console.log(this.kgsjdata)
       // console.log(this.kgsjdata.strategy_set_id);
-      if(!this.kgsjdata.hasOwnProperty('strategy_set_id')){
-        this.kgsjdata.strategy_set_id = 0;
+      if(!this.kgsjdata.hasOwnProperty('strategy_id')){
+        this.kgsjdata.strategy_id = 0;
       }
       // return
       var ccszdata = {
-        "strategy_set_id":this.kgsjdata.strategy_set_id, // 策略id
+        "strategy_id":this.kgsjdata.strategy_id, // 策略id
         "terminal_id": this.sbid // 设备id
       };
       sendInitSet(ccszdata).then(response => {
@@ -2161,11 +2174,19 @@ export default {
         this.dldydata[0] = response.data;
         // this.print(response)
         this.reflush = !this.reflush;
+        this.dldyslch(response.data.strategy_id)
       });
     },
     dldyszfn(){
+      for(let key  in this.dldy_data){
+        if(key!='loop_1'&&key!='loop_2'&&key!='loop_3'&&key!='loop_4'&&key!='ct1All'&&key!='iErrOff'&&key!='ct_1'&&key!='ct_2'&&key!='ct_3'&&key!='ct_4'){
+          this.dldy_data[key] = Number(this.dldy_data[key]);
+        }
+        // console.log(key + '---' + obj[key])
+      }
       editElectricitySet(this.dldy_data).then(response => {
         // this.print(response);
+
         this.$message({
           message: response.data,
           type: "success"
@@ -2182,12 +2203,13 @@ export default {
         this.ldbharrdata[0] = response.data;
         this.ldbhdata = response.data;
         this.reflush = !this.reflush;
+        this.ldslch(response.data.strategy_id)
       });
     },
     ldsz(){
-      if(!this.ldbhdata.hasOwnProperty('strategy_set_id')){
-        this.ldbhdata.strategy_set_id = 0;
-      }
+      // if(!this.ldbhdata.hasOwnProperty('strategy_set_id')){
+      //   this.ldbhdata.strategy_set_id = 0;
+      // }
       this.ldbhdata.terminal_id = this.sbid;
       for(let key  in this.ldbhdata){
         this.ldbhdata[key] = Number(this.ldbhdata[key]);
@@ -2207,6 +2229,7 @@ export default {
         this.bj_data = response.data;
         // this.print(this.bj_data)
         this.reflush = !this.reflush;
+        this.bjslch(response.data.strategy_id)
         // this.options = response.data.list;
         // var data = response.data.list;
       });
