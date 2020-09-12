@@ -134,6 +134,26 @@ export function sendLeakageInfo(data) {
         data
     })
 }
+//过流保护及策略设置
+export function queryOverCurrentData(terminalId) {
+    return request({
+        url: '/api/v1/queryOverCurrentData/' + terminalId,
+        method: 'get'
+    })
+}
+export function sendOverCurrent(data) {
+    return request({
+        url: '/api/v1/sendOverCurrent',
+        method: 'POST',
+        data
+    })
+}
+
+
+
+
+
+
 
 // 告警配置
 export function queryAlarmSetInfo(terminalId) {

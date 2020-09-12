@@ -99,7 +99,7 @@
     </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1300px">
+    <el-dialog :title="title" :visible.sync="open" width="1450px">
       <el-tabs type="border-card">
         <el-tab-pane label="手动及键盘锁">
           <div style="margin-bottom:15px;">
@@ -1043,7 +1043,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="number" v-model="dldy_data.iaS1">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="dldy_data.iaS1">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1417,6 +1417,353 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+
+        <el-tab-pane label="过流保护及策略设置">         
+          <div style="margin-bottom;15px;">
+            过流保护及策略设置
+            <div style="margin-top:15px;">
+              已选择的策略:  <el-select @change="glbhslch" style="margin-right:15px;" size="mini" v-model="glbh_data.strategyId" placeholder="请选择">
+                            <el-option
+                              v-for="item in options"
+                              :key="item.Id"
+                              :label="item.name"
+                              :value="item.Id"
+                              >
+                            </el-option>
+                          </el-select>
+              策略描述: <input disabled style="width:500px;" type="text" v-model="glbhms" name="" id="">
+               <el-button style="margin-left:15px;" @click="glbhsz" type="success">设置</el-button>
+            </div>
+          </div>
+          <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="dldydata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L1</el-table-column>
+              <el-table-column
+                label="过保功能"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l1OverCurrentFunc" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="分闸电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="glbh_data.l1OverCurrent">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="手柄状态"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l1OverCurrentOf" placeholder="请选择">
+                    <el-option
+                      v-for="item in jbztop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS1">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS1">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS1">
+                </template>
+              </el-table-column>
+          </el-table>
+          <el-table :show-header="false" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L2</el-table-column>
+              <el-table-column
+                label="过保功能"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l2OverCurrentFunc" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="分闸电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="glbh_data.l2OverCurrent">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="手柄状态"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l2OverCurrentOf" placeholder="请选择">
+                    <el-option
+                      v-for="item in jbztop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS2">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS2">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS2">
+                </template>
+              </el-table-column>
+          </el-table>
+          <el-table :show-header="false" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L3</el-table-column>
+              <el-table-column
+                label="过保功能"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l3OverCurrentFunc" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="分闸电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="glbh_data.l3OverCurrent">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="手柄状态"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l3OverCurrentOf" placeholder="请选择">
+                    <el-option
+                      v-for="item in jbztop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS3">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS3">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS3">
+                </template>
+              </el-table-column>
+          </el-table>
+          <el-table :show-header="false" v-loading="loading" :key="reflush" :data="ldbharrdata" stripe border>
+              <el-table-column
+                align="center"
+                label="回路"
+                :show-overflow-tooltip="true"
+              >L4</el-table-column>
+              <el-table-column
+                label="过保功能"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l4OverCurrentFunc" placeholder="请选择">
+                    <el-option
+                      v-for="item in kgop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="分闸电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" type="text" v-model="glbh_data.l4OverCurrent">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="手柄状态"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l4OverCurrentOf" placeholder="请选择">
+                    <el-option
+                      v-for="item in jbztop"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="A相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS4">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="B相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS4">
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="C相采样电流（A）"
+                align="center"
+                class-name="small-padding fixed-width"
+              >
+                <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS4">
+                </template>
+              </el-table-column>
+          </el-table>
+
+
+
+        </el-tab-pane>
+
         <el-tab-pane label="报警勾选及策略">         
           <div style="margin-bottom;15px;">
             报警勾选及策略
@@ -1747,6 +2094,8 @@ import {
   sendLeakageInfo,
   queryAlarmSetInfo,
   editAlarmSet,
+  queryOverCurrentData,
+  sendOverCurrent,
   queryElectricitySetInfo,
   editElectricitySet
 
@@ -1803,6 +2152,7 @@ export default {
       kgclms:'',
       ldclms:'',
       bjclms:'',
+      glbhms:'',
       dldyclms:'',
       // select
       tfop:[{
@@ -1869,6 +2219,7 @@ export default {
       jps_data:{},
       dldy_data:{},
       jbxx_data:{},
+      glbh_data:{},
       // 遮罩层
       loading: true,
       // 总条数
@@ -1943,6 +2294,14 @@ export default {
       for(var i=0;i<this.options.length;i++){
         if(this.options[i].Id==data){
           this.bjclms = this.options[i].explains;
+        }
+      } 
+    },
+    glbhslch(data){
+      this.glbhms = '';
+      for(var i=0;i<this.options.length;i++){
+        if(this.options[i].Id==data){
+          this.glbhms = this.options[i].explains;
         }
       } 
     },
@@ -2093,7 +2452,7 @@ export default {
       // console.log(sbid);
       queryGmtSet(sbid).then(response => {
         // console.log(response);
-        this.print(response);
+        // this.print(response);
         this.dlwzdata[0] = response.data;
         this.dldata = response.data;
         this.reflush = !this.reflush;
@@ -2222,6 +2581,31 @@ export default {
         });
       });
     },
+
+    //过流保护及策略设置
+    glbh(){
+      queryOverCurrentData(this.sbid).then(response => {
+        console.log(response);
+        this.glbh_data = response.data;
+        this.print(this.glbh_data)
+        this.reflush = !this.reflush;
+        this.glbhslch(response.data.strategyId)
+      });
+    },
+    glbhsz(){
+      // this.print(this.bj_data)
+      for(let key  in this.glbh_data){
+        this.glbh_data[key] = Number(this.glbh_data[key]);
+      }
+      sendOverCurrent(this.glbh_data).then(response => {
+        // console.log(response);
+        this.$message({
+          message: response.msg,
+          type: "success"
+        });
+      });
+    },
+
     // 告警配置
     gjpz(){
       queryAlarmSetInfo(this.sbid).then(response => {
@@ -2237,7 +2621,7 @@ export default {
     bjsz(){
       // this.print(this.bj_data)
       editAlarmSet(this.bj_data).then(response => {
-        console.log(response);
+        // console.log(response);
         this.$message({
           message: response.msg,
           type: "success"
@@ -2260,7 +2644,7 @@ export default {
     },
     jbxxsz(){
       editterminal(this.jbxx_data).then(response => {
-        console.log(response);
+        // console.log(response);
         this.$message({
           message: response.msg,
           type: "success"
@@ -2269,30 +2653,30 @@ export default {
     },
     // 区域
     getsheng(){
-      console.log(this.jbxx_data)
+      // console.log(this.jbxx_data)
       queryProvince(this.jbxx_data).then(response =>{
-        console.log(response)
+        // console.log(response)
         this.optionsheng = response.data;
       })
     },
     getshi(){
-      console.log(this.jbxx_data)
+      // console.log(this.jbxx_data)
       queryCity(this.jbxx_data).then(response =>{
-        console.log(response)
+        // console.log(response)
         this.optionshi = response.data;
       })
     },
     getqv(){
-      console.log(this.jbxx_data)
+      // console.log(this.jbxx_data)
       queryCounty(this.jbxx_data).then(response =>{
-        console.log(response)
+        // console.log(response)
         this.optionqv = response.data;
       })
     },
     getzhen(){
-      console.log(this.jbxx_data)
+      // console.log(this.jbxx_data)
       queryTown(this.jbxx_data).then(response =>{
-        console.log(response)
+        // console.log(response)
         this.optionzhen = response.data;
       })
     },
@@ -2311,6 +2695,7 @@ export default {
       this.kgsjsz();
       this.ldbhsz();   
       this.gjpz();
+      this.glbh();
       this.dldysz();
       this.jbxx();
     }
