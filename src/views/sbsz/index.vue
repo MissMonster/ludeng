@@ -111,19 +111,11 @@
 
           <el-table v-loading="loading" :data="jpsdata" :key="reflush" stripe border>
             <el-table-column label="回路" align="center" :show-overflow-tooltip="true">L1</el-table-column>
-            <!-- <el-table-column
-              label="工作模式"
-              align="center"
-              prop="oneManual"
-              :show-overflow-tooltip="true"
-            /> -->
             <el-table-column
                 label="工作模式"
                 align="center"
                 class-name="small-padding fixed-width"
               >
-                <template slot-scope="scope">
-                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.oneManual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -132,15 +124,12 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                </template>
               </el-table-column>
               <el-table-column
                 label="输出"
                 align="center"
                 class-name="small-padding fixed-width"
               >
-                <template slot-scope="scope">
-                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.oneOnF" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -149,7 +138,6 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                </template>
               </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN1</el-table-column>
             <el-table-column label="状态" align="center" prop="inOne" :show-overflow-tooltip="true" />
@@ -166,19 +154,11 @@
             border
           >
             <el-table-column label="回路" align="center" :show-overflow-tooltip="true">L2</el-table-column>
-            <!-- <el-table-column
-              label="工作模式"
-              align="center"
-              prop="twoManual"
-              :show-overflow-tooltip="true"
-            /> -->
             <el-table-column
                 label="工作模式"
                 align="center"
                 class-name="small-padding fixed-width"
               >
-                <template slot-scope="scope">
-                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.twoManual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -187,15 +167,12 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                </template>
               </el-table-column>
               <el-table-column
                 label="输出"
                 align="center"
                 class-name="small-padding fixed-width"
               >
-                <template slot-scope="scope">
-                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.twoOnF" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -204,24 +181,12 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
-                </template>
               </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN2</el-table-column>
             <el-table-column label="状态" align="center" prop="inTwo" :show-overflow-tooltip="true" />
             <el-table-column label="A相电流" align="center" prop="i2a" :show-overflow-tooltip="true" />
             <el-table-column label="B相电流" align="center" prop="i2b" :show-overflow-tooltip="true" />
             <el-table-column label="C相电流" align="center" prop="i2c" :show-overflow-tooltip="true" />
-            <!-- <el-table-column
-              label="操作"
-              align="center"
-              width="100"
-              class-name="small-padding fixed-width"
-            >
-              <template slot-scope="scope">
-                <el-switch v-model="of2"></el-switch>
-                <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-              </template>
-            </el-table-column> -->
             
           </el-table>
           <el-table
@@ -1475,7 +1440,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l1OverCurrentOf" placeholder="请选择">
+                  <el-select disabled size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l1OverCurrentOf" placeholder="请选择">
                     <el-option
                       v-for="item in jbztop"
                       :key="item.value"
@@ -1492,7 +1457,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS1">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.ia">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1502,7 +1467,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS1">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.ib">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1512,7 +1477,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS1">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.ic">
                 </template>
               </el-table-column>
           </el-table>
@@ -1556,7 +1521,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l2OverCurrentOf" placeholder="请选择">
+                  <el-select disabled size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l2OverCurrentOf" placeholder="请选择">
                     <el-option
                       v-for="item in jbztop"
                       :key="item.value"
@@ -1573,7 +1538,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS2">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i2a">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1583,7 +1548,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS2">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i2b">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1593,7 +1558,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS2">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i2c">
                 </template>
               </el-table-column>
           </el-table>
@@ -1637,7 +1602,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l3OverCurrentOf" placeholder="请选择">
+                  <el-select disabled size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l3OverCurrentOf" placeholder="请选择">
                     <el-option
                       v-for="item in jbztop"
                       :key="item.value"
@@ -1654,7 +1619,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS3">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i3a">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1664,7 +1629,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS3">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i3b">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1674,7 +1639,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS3">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i3c">
                 </template>
               </el-table-column>
           </el-table>
@@ -1718,7 +1683,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <el-select size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l4OverCurrentOf" placeholder="请选择">
+                  <el-select disabled size="mini" style="display:inline-block;width: 100px;" v-model="glbh_data.l4OverCurrentOf" placeholder="请选择">
                     <el-option
                       v-for="item in jbztop"
                       :key="item.value"
@@ -1735,7 +1700,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.iaS4">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i4a">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1745,7 +1710,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.ibS4">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i4b">
                 </template>
               </el-table-column>
               <el-table-column
@@ -1755,7 +1720,7 @@
               >
                 <template slot-scope="scope">
                   <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
-                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="dldy_data.icS4">
+                  <input style="height: 26px;width: 100px;margin-left: 5px;" disabled type="text" v-model="glbh_data.i4c">
                 </template>
               </el-table-column>
           </el-table>
@@ -2587,7 +2552,7 @@ export default {
       queryOverCurrentData(this.sbid).then(response => {
         console.log(response);
         this.glbh_data = response.data;
-        this.print(this.glbh_data)
+        // this.print(this.glbh_data)
         this.reflush = !this.reflush;
         this.glbhslch(response.data.strategyId)
       });
