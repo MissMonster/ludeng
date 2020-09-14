@@ -116,6 +116,8 @@
                 align="center"
                 class-name="small-padding fixed-width"
               >
+              <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.oneManual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -124,12 +126,15 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
+              </template>
               </el-table-column>
               <el-table-column
                 label="输出"
                 align="center"
                 class-name="small-padding fixed-width"
               >
+              <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.oneOnF" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -138,6 +143,7 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
+              </template>
               </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN1</el-table-column>
             <el-table-column label="状态" align="center" prop="inOne" :show-overflow-tooltip="true" />
@@ -159,6 +165,8 @@
                 align="center"
                 class-name="small-padding fixed-width"
               >
+              <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.twoManual" placeholder="请选择">
                     <el-option
                       v-for="item in gzop"
@@ -167,12 +175,15 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
+              </template>
               </el-table-column>
               <el-table-column
                 label="输出"
                 align="center"
                 class-name="small-padding fixed-width"
               >
+              <template slot-scope="scope">
+                  <el-button style="display:none;" @click="a(scope.row)">设置</el-button>
                   <el-select size="mini" style="display:inline-block;width: 100px;" v-model="jps_data.twoOnF" placeholder="请选择">
                     <el-option
                       v-for="item in kgop"
@@ -181,6 +192,7 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
+              </template>
               </el-table-column>
             <el-table-column label="接触器" align="center" :show-overflow-tooltip="true">IN2</el-table-column>
             <el-table-column label="状态" align="center" prop="inTwo" :show-overflow-tooltip="true" />
