@@ -1410,6 +1410,7 @@
                           </el-select>
               策略描述: <input disabled style="width:500px;" type="text" v-model="glbhms" name="" id="">
                <el-button style="margin-left:15px;" @click="glbhsz" type="success">设置</el-button>
+               <el-button type="success" @click="handlezc">招测</el-button>
             </div>
           </div>
           <el-table style="margin-top:15px;" v-loading="loading" :key="reflush" :data="dldydata" stripe border>
@@ -2302,7 +2303,7 @@ export default {
     handlezc(id) {
       var id = this.sbid;
       sendHeartByTerminalId(id).then(response => {
-        this.reset();
+        // this.reset();
         this.$message({
           message: response.msg,
           type: "success"
